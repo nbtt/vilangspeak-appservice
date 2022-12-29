@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  api:
+    image: nbtt/vilangspeak-appservice-api
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - .:/usr/src/app
+    # env_file:
+    # - .env
+    ports:
+      - 80:3000
+    links:
+      - "db:db"
+  db:
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=vilangspeak_db
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=vilangspeak-user
+      - MYSQL_PASSWORD=GiLJko1Tf2GfJrJl
+    ports:
+      - "3307:3306"
+    volumes:
+      - ~/dbfiles:/var/lib/minesql
+      # - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
