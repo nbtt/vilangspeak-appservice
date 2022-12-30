@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   api:
+    image: nbtt/vilangspeak-appservice-api:latest
     build:
       dockerfile: Dockerfile
       context: .
