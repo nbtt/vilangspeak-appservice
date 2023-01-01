@@ -7,11 +7,11 @@ import { Repository } from 'typeorm';
 export class TestxService {
     constructor(
         @InjectRepository(Testx)
-        private lessonRepository: Repository<Testx>,
+        private testxRepository: Repository<Testx>,
     ) {}
 
     getAll(limit: number = 10, offset: number = 0): Promise<Testx[]> {
-        return this.lessonRepository.find({
+        return this.testxRepository.find({
             take: limit,
             skip: offset,
             loadRelationIds: {
