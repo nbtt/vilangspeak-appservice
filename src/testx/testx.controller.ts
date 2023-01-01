@@ -1,10 +1,10 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { GetAllDTO } from 'src/dto/get-all.dto';
-import { LessonService } from './lesson.service';
+import { TestxService } from './testx.service';
 
-@Controller('/app/lesson')
-export class LessonController {
-    constructor(private lessonService: LessonService) {}
+@Controller('/app/test')
+export class TestxController {
+    constructor(private testxService: TestxService) {}
 
     @Get('/all')
     async getAll(
@@ -13,13 +13,13 @@ export class LessonController {
         const limit = query.limit || 10;
         const offset = query.offset || 0;
 
-        const lessons = limit == 0 ? [] : await this.lessonService.getAll(limit, offset);
+        const tests = limit == 0 ? [] : await this.testxService.getAll(limit, offset);
         
         return {
             timestamp: Date.now(),
             data: {
-                lessons: lessons,
-                total: lessons.length,
+                tests: tests,
+                total: tests.length,
             },
         };
     }
