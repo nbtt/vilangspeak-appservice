@@ -24,13 +24,13 @@ export class LessonService {
         });
     }
 
-    getProgressAll(id: number, limit: number = 10, offset: number = 0): Promise<LessonLog[]> {
+    getProgressAll(accountId: number, limit: number = 10, offset: number = 0): Promise<LessonLog[]> {
         return this.lessonLogRespository.find({
             take: limit,
             skip: offset,
             where: {
                 account: {
-                    id: id,
+                    id: accountId,
                 },
             },
             loadRelationIds: {
@@ -40,5 +40,37 @@ export class LessonService {
                 account: false,
             }
         })
+    }
+
+    getProgress(id: number, accountId: number) {
+        return this.lessonLogRespository.findOne({
+            where: {
+                account: {
+                    id: accountId,
+                },
+                lesson: {
+                    id: id,
+                }
+            },
+            loadRelationIds: {
+                relations: ['lesson'],
+            },
+            relations: {
+                account: false,
+            }
+        })
+    }
+
+    async isLessonExisted(id: number): Promise<Boolean> {
+        const lesson = await this.lessonRepository.findOne({
+            where: {
+                id: id,
+            },
+            select: {
+                id: true,
+            }
+        });
+
+        return lesson != null;
     }
 }
