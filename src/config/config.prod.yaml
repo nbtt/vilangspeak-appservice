@@ -1,0 +1,6 @@
+db:
+  host: 'db'
+  port: 3306,
+  username: 'vilangspeak-user'
+  password: 'GiLJko1Tf2GfJrJl'
+  database: 'vilangspeak_db'
