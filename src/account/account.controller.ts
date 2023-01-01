@@ -1,4 +1,5 @@
-import { Controller, Get, HttpException, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Param, Query } from '@nestjs/common';
+import { GetAllDTO } from 'src/dto/get-all.dto';
 import { GetByIdDTO } from 'src/dto/get-by-id.dto';
 import { AccountService } from './account.service';
 
@@ -23,4 +24,29 @@ export class AccountController {
             },
         };
     } 
+
+    @Get('/:id/achievement')
+    async getAllAchievement(
+        @Param() param: GetByIdDTO,
+        @Query() query: GetAllDTO,
+    ) {
+        const achievements = await this.accountService.getAchievements(param.id);
+
+        const achievementsResponse = achievements.map((item) => {
+            return {
+                id: item.achievement.id,
+                name: item.achievement.name,
+                image: item.achievement.image,
+                date: item.date.valueOf(),
+            }
+        });
+
+        return {
+            timestamp: Date.now(),
+            data: {
+                account: param.id,
+                achievements: achievementsResponse,
+            }
+        };
+    }
 }

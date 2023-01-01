@@ -9,6 +9,12 @@ import { LessonModule } from './lesson/lesson.module';
 import { CategoryModule } from './category/category.module';
 import { TestxModule } from './testx/testx.module';
 import { AccountModule } from './account/account.module';
+import { Account } from './entity/account.entity';
+import { Category } from './entity/category.entity';
+import { Lesson } from './entity/lesson.entity';
+import { Testx } from './entity/testx.entity';
+import { Achievement } from './entity/achievement.entity';
+import { AchievementLog } from './entity/achievement-log';
 
 @Module({
   imports: [
@@ -25,7 +31,7 @@ import { AccountModule } from './account/account.module';
         username: configService.get('db.username'),
         password: configService.get('db.password'),
         database: configService.get('db.database'),
-        autoLoadEntities: true,
+        entities: [Account, Category, Lesson, Testx, Achievement, AchievementLog],
         synchronize: true,
       }),
       inject: [ConfigService],
