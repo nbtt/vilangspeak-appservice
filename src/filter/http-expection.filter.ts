@@ -16,7 +16,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         timestamp: Date.now(),
         path: request.url,
         code: status == 400 ? 1 : 2,
-        message: exceptionResponse.message,
+        message: exceptionResponse.message || exception.message,
       });
   }
 }
