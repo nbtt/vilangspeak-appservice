@@ -8,6 +8,7 @@ import configuration from './config/configuration';
 import { LessonModule } from './lesson/lesson.module';
 import { CategoryModule } from './category/category.module';
 import { TestxModule } from './testx/testx.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { TestxModule } from './testx/testx.module';
     LessonModule,
     CategoryModule,
     TestxModule,
+    AccountModule,
   ],
   controllers: [AppController],
   providers: [AppService],
