@@ -14,6 +14,6 @@ export class Account {
     @Column()
     username: string;
 
-    @Column({type: "smallint"})
+    @Column({type: "tinyint"})
     role: number;
 }
