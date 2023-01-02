@@ -10,6 +10,8 @@ services:
     # - .env
     ports:
       - 80:3000
+    volumes:
+      - ~/vls-appservice-public:/usr/src/app/public
     depends_on:
       db:
         condition: service_healthy
@@ -28,7 +30,6 @@ services:
       - "3307:3306"
     volumes:
       - ~/dbfiles:/var/lib/minesql
-      - ~/vls-appservice-public:/usr/src/app/public
       # - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
