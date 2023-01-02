@@ -27,6 +27,36 @@ export class LessonController {
         };
     }
 
+    @Get('/recommend')
+    async getRecommend(
+        @Query() query: QueryByAccountIdDTO,
+    ) {
+        const recommendLessonLogs = await this.lessonService.getRecommend(query.account_id);
+        const recommendLessons = recommendLessonLogs.map(lessonLog => {
+            return {
+                id: lessonLog.lesson.id,
+                name: lessonLog.lesson.name,
+                visible: lessonLog.lesson.visible,
+                category: lessonLog.lesson.category,
+                progress: (lessonLog.id == null) ? {
+                    value: 0,
+                    last_date: 0,
+                } : {
+                    value: lessonLog.progress,
+                    last_date: lessonLog.date.valueOf(),
+                }
+            }
+        });
+
+        return {
+            timestamp: Date.now(),
+            data: {
+                lessons: recommendLessons,
+                total: recommendLessons.length,
+            }
+        }
+    }
+
     @Get('/all/progress')
     async getProgressAll(
         @Query() query: GetAllByIdDTO,

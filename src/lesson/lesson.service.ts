@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessonLog } from 'src/entity/lesson-log.entity';
 import { Lesson } from 'src/entity/lesson.entity';
-import { QueryFailedError, Repository } from 'typeorm';
+import { LessThan, MoreThan, QueryFailedError, Repository } from 'typeorm';
 
 @Injectable()
 export class LessonService {
@@ -22,6 +22,89 @@ export class LessonService {
                  relations: ['category'],
             },
         });
+    }
+
+    async getRecommend(accountId: number) {
+        const lastViewLessonLog = await this.lessonLogRespository.findOne({
+            where: {
+                account: {
+                    id: accountId,
+                }
+            },
+            relations: {
+                lesson: {
+                    category: true,
+                },
+                account: false,
+            },
+            order: {
+                date: 'DESC',
+            }
+        });
+
+        if (lastViewLessonLog == null) {
+            // not complete any lesson, return first 2 lessons
+            return this.lessonRepository.find({
+                take: 2,
+                relations: {
+                    category: true,
+                },
+                order: {
+                    id: 'ASC',
+                }
+            }).then(lessons => lessons.map(lesson => this.createEmptyLessonLog(lesson)));
+        }
+
+        // try to get next lesson or previous lesson (if next lesson not found)
+        const nextLesson = await this.lessonRepository.findOne({
+            where: {
+                id: MoreThan(lastViewLessonLog.lesson.id),
+            },
+            order: {
+                id: 'ASC',
+            },
+        });
+
+        const previousLesson = (nextLesson == null) ? (await this.lessonRepository.findOne({
+                where: {
+                    id: LessThan(lastViewLessonLog.lesson.id),
+                },
+                order: {
+                    id: 'DESC',
+                }
+            }))
+            : null;
+            
+        const secondRecommendLesson = nextLesson || previousLesson;
+        if (secondRecommendLesson == null) {
+            // Last view lesson is the only lesson exists
+            return [lastViewLessonLog];
+        }
+
+        // try to get progress of second recommended lesson
+        let secondRecommendLessonLog = await this.lessonLogRespository.findOne({
+            where: {
+                account: {
+                    id: accountId,
+                },
+                lesson: {
+                    id: secondRecommendLesson.id,
+                }
+            },
+            relations: {
+                lesson: {
+                    category: true,
+                },
+                account: false,
+            },
+        });
+        
+        if (secondRecommendLessonLog == null) {
+            // no progress found, make default lesson log
+            secondRecommendLessonLog = this.createEmptyLessonLog(secondRecommendLesson);
+        }
+        
+        return [lastViewLessonLog, secondRecommendLessonLog];
     }
 
     getProgressAll(accountId: number, limit: number = 10, offset: number = 0): Promise<LessonLog[]> {
@@ -109,5 +192,15 @@ export class LessonService {
         });
 
         return lesson != null;
+    }
+
+    createEmptyLessonLog(lesson: Lesson): LessonLog {
+        return {
+            lesson: lesson,
+            account: null,
+            id: null,
+            date: null,
+            progress: null,
+        }
     }
 }
