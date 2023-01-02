@@ -1,11 +1,11 @@
 import { IsInt } from "class-validator";
 
-export class GetByIdDTO {
+export class QueryByIdDTO {
     @IsInt()
     id: number;
 }
 
-export class GetByAccountIdDTO {
+export class QueryByAccountIdDTO {
     @IsInt()
     account_id: number;
 }

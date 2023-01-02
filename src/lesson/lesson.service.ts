@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessonLog } from 'src/entity/lesson-log.entity';
 import { Lesson } from 'src/entity/lesson.entity';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 
 @Injectable()
 export class LessonService {
@@ -59,6 +59,43 @@ export class LessonService {
                 account: false,
             }
         })
+    }
+
+    async setProgress(id: number, accountId: number, progress: number) {
+        let lessonLog = await this.getProgress(id, accountId);
+        if (lessonLog == null) {
+            await this.lessonLogRespository.insert({
+                date: new Date(),
+                progress: progress,
+                account: {
+                    id: accountId,
+                },
+                lesson: {
+                    id: id,
+                }
+            }).catch(error => {
+                if (error instanceof QueryFailedError) {
+                    throw new HttpException("Not found account or lesson", HttpStatus.NOT_FOUND);
+                }
+            });
+        }
+        else {
+            await this.lessonLogRespository.update({
+                account: {
+                    id: accountId,
+                },
+                lesson: {
+                    id: id,
+                }
+            }, {
+                date: new Date(),
+                progress: progress,
+            }).catch(error => {
+                if (error instanceof QueryFailedError) {
+                    throw new HttpException("Not found account or lesson", HttpStatus.NOT_FOUND);
+                }
+            });
+        }
     }
 
     async isLessonExisted(id: number): Promise<Boolean> {

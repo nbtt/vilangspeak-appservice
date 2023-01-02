@@ -1,7 +1,8 @@
-import { Controller, Get, HttpException, HttpStatus, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { GetAllByIdDTO } from 'src/dto/get-all-by-id.dto';
 import { GetAllDTO } from 'src/dto/get-all.dto';
-import { GetByAccountIdDTO, GetByIdDTO } from 'src/dto/get-by-id.dto';
+import { QueryByAccountIdDTO, QueryByIdDTO } from 'src/dto/query-by-id.dto';
+import { SetLessonProgressDTO } from 'src/dto/progress.dto';
 import { LessonService } from './lesson.service';
 
 @Controller('/app/lesson')
@@ -57,8 +58,8 @@ export class LessonController {
 
     @Get('/:id/progress')
     async getProgress(
-        @Param() param: GetByIdDTO,
-        @Query() query: GetByAccountIdDTO,
+        @Param() param: QueryByIdDTO,
+        @Query() query: QueryByAccountIdDTO,
     ) {
         const accountId = query.account_id;
         const id = param.id;
@@ -92,5 +93,17 @@ export class LessonController {
                 }
             },
         };
+    }
+
+    @Post('/:id/progress')
+    async setProgress(
+        @Param() param: QueryByIdDTO,
+        @Body() body: SetLessonProgressDTO,
+    ) {
+        await this.lessonService.setProgress(param.id, body.account_id, body.value);
+        return {
+            timestamp: Date.now(),
+            status: "SUCCESS",
+        }
     }
 }
