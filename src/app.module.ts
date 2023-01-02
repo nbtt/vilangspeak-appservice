@@ -10,6 +10,8 @@ import { CategoryModule } from './category/category.module';
 import { TestxModule } from './testx/testx.module';
 import { AccountModule } from './account/account.module';
 import { entities } from './entity/entities';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -30,6 +32,10 @@ import { entities } from './entity/entities';
         synchronize: true,
       }),
       inject: [ConfigService],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/public',
     }),
     LessonModule,
     CategoryModule,

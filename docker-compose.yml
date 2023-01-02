@@ -28,6 +28,7 @@ services:
       - "3307:3306"
     volumes:
       - ~/dbfiles:/var/lib/minesql
+      - ~/vls-appservice-public:/usr/src/app/public
       # - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
