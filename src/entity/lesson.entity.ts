@@ -1,5 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Test } from "@nestjs/testing";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Card } from "./card.entity";
 import { Category } from "./category.entity";
+import { Testx } from "./testx.entity";
 
 @Entity()
 export class Lesson {
@@ -14,4 +17,11 @@ export class Lesson {
 
     @ManyToOne(type => Category)
     category: Category;
+
+    @OneToOne(type => Testx)
+    @JoinColumn()
+    linkedTest: Testx;
+
+    @OneToMany(type => Card, card => card.lesson)
+    cards: Card[];
 }
