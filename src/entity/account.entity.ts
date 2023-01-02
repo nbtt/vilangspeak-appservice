@@ -1,5 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
+export enum AccountRole {
+    ADMIN = 0,
+    USER = 1,
+}
+
 @Entity()
 export class Account {
     @PrimaryGeneratedColumn()
@@ -15,5 +20,5 @@ export class Account {
     username: string;
 
     @Column({type: "tinyint"})
-    role: number;
+    role: AccountRole;
 }
