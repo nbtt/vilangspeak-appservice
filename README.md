@@ -19,6 +19,8 @@ Services for ViLangSpeak application.
 yarn install
 ```
 
+And create a folder name `public/` and move file `index.html` to this folder.
+
 ### Running the app
 
 ```bash
