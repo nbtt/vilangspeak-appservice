@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.31)
 # Database: vilangspeak_db
-# Generation Time: 2023-01-03 18:59:17 +0000
+# Generation Time: 2023-01-04 01:43:38 +0000
 # ************************************************************
 
 
@@ -184,7 +184,19 @@ VALUES
 	(9,0,2,'Examples',3),
 	(10,1,3,'*Xin chào* mọi người.\n*Hello* everyone.\n\n*Chào* mọi người, em vừa đến đây.\n*Hello* everyone, I have just came here.\n\n*Chào* anh, giờ em về nhà.\n*Good bye*, I am going home.',3),
 	(11,0,4,'Pronunciation tips',3),
-	(12,1,5,'*xin* has Mid-Level Tone (Thanh Ngang) (no mark) and *chào* have Low Falling Tone (Thanh Huyền) (mark as *`* above the word)',3);
+	(12,1,5,'*xin* has Mid-Level Tone (Thanh Ngang) (no mark) and *chào* have Low Falling Tone (Thanh Huyền) (mark as *`* above the word)',3),
+	(13,1,0,'*mọi* means \"all\", \"every\".\n\"người\" means \"man\", \"person\", \"people\", \"individual\"',4),
+	(14,0,0,'Examples',7),
+	(15,1,1,'Thời gian *là* tiền bạc.\nTime *is* money.',7),
+	(16,0,0,'Pronounciation tips',10),
+	(17,1,1,'This word has High Rising Tone (Thanh Sắc). It is mark as */* above the word.',10),
+	(18,1,0,'Hanoi is the capital of Viet Nam',11),
+	(19,1,0,'In this context, *từ* means *from*',12),
+	(20,0,0,'Examples',13),
+	(21,1,1,'Tôi *đang* ra ngoài.\nI am going out.\n\nCô ấy *đang* bận.\nShe is busy now.',13),
+	(22,1,0,'Wonderful! You are learning Vietnamese.',15),
+	(23,1,0,'*gì* means *what* but the order of it in the sentence is different to *what*',18),
+	(24,1,0,'*đâu* means *where* but the order of it in the sentence is different to *where*',20);
 
 /*!40000 ALTER TABLE `card_item` ENABLE KEYS */;
 UNLOCK TABLES;
