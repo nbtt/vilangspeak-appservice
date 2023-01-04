@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Card } from "./card.entity";
+import { createTransformerEnum } from "../common/util";
 
 export enum CardItemType {
     HEADER = 'h',
@@ -13,7 +14,10 @@ export class CardItem {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: 'tinyint'})
+    @Column({
+        type: 'tinyint',
+        transformer: createTransformerEnum(CardItemType),
+    })
     type: CardItemType;
 
     @Column({type: 'tinyint'})

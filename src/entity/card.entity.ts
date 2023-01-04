@@ -1,10 +1,11 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { CardItem } from "./card-item.entity";
 import { Lesson } from "./lesson.entity";
+import { createTransformerEnum } from "../common/util";
 
-enum CardType {
+export enum CardType {
     WORD = 'w',
-    SENTENCE = 'h',
+    SENTENCE = 's',
 }
 
 @Entity()
@@ -12,7 +13,10 @@ export class Card {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: 'tinyint'})
+    @Column({
+        type: 'tinyint',
+        transformer: createTransformerEnum(CardType),
+    })
     type: CardType;
 
     @Column()
