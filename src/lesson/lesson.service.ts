@@ -24,6 +24,23 @@ export class LessonService {
         });
     }
 
+    getOne(id: number) {
+        return this.lessonRepository.findOne({
+            where: {
+                id: id,
+            },
+            loadRelationIds: {
+                relations: ['linkedTest'],
+            },
+            relations: {
+                cards: {
+                    items: true,
+                },
+                category: true,
+            }
+        })
+    }
+
     async getRecommend(accountId: number) {
         const lastViewLessonLog = await this.lessonLogRespository.findOne({
             where: {

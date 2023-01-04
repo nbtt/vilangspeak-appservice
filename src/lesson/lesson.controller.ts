@@ -57,6 +57,47 @@ export class LessonController {
         }
     }
 
+    @Get('/:id')
+    async getOne (
+        @Param() param: QueryByIdDTO,
+    ) {
+        const lesson = await this.lessonService.getOne(param.id);
+
+        if (lesson == null) {
+            throw new HttpException("Lesson not found", HttpStatus.NOT_FOUND);
+        }
+
+        const cardsResponse = lesson.cards.map((card) => {
+            return {
+                id: card.id,
+                type: card.type,
+                audio_url: card.audioUrl,
+                content: card.content,
+                translation: card.translation,
+                items: card.items,
+            }
+        });
+
+        const lessonResponse = {
+            id: lesson.id,
+            name: lesson.name,
+            visible: lesson.visible,
+            category: lesson.category,
+            test: lesson.linkedTest,
+            cards: {
+                value: cardsResponse,
+                total: cardsResponse.length,
+            },
+        };
+
+        return {
+            timestamp: Date.now(),
+            data: {
+                lesson: lessonResponse,
+            }
+        }
+    }
+
     @Get('/all/progress')
     async getProgressAll(
         @Query() query: GetAllByIdDTO,
