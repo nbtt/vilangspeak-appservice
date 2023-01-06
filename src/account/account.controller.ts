@@ -46,6 +46,7 @@ export class AccountController {
             data: {
                 account: param.id,
                 achievements: achievementsResponse,
+                total: achievementsResponse.length,
             }
         };
     }
