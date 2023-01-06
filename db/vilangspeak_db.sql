@@ -1,13 +1,13 @@
 # ************************************************************
 # Sequel Ace SQL dump
-# Version 20044
+# Version 20046
 #
 # https://sequel-ace.com/
 # https://github.com/Sequel-Ace/Sequel-Ace
 #
 # Host: 127.0.0.1 (MySQL 8.0.31)
 # Database: vilangspeak_db
-# Generation Time: 2023-01-06 02:47:15 +0000
+# Generation Time: 2023-01-06 10:58:23 +0000
 # ************************************************************
 
 
@@ -63,8 +63,8 @@ LOCK TABLES `achievement` WRITE;
 
 INSERT INTO `achievement` (`id`, `name`, `image`)
 VALUES
-	(1,'Get 7 day series','http://xxxxx/upload/image/achievement-7day.jpg'),
-	(2,'Get full points for 5 tests','http://xxxxx/upload/image/achievement-full-5-point.jpg'),
+	(1,'Get 7 day series','/public/image/achievement-7-days.png'),
+	(2,'Get full points for 5 tests','/public/image/achievement-full-5-tests.png'),
 	(3,'Achievement 3',''),
 	(4,'Achievement 4','');
 
@@ -219,9 +219,9 @@ LOCK TABLES `category` WRITE;
 
 INSERT INTO `category` (`id`, `name`, `image`)
 VALUES
-	(1,'Greeting','img/g.png'),
-	(2,'Vehicles','img/c2.png'),
-	(3,'Animals',''),
+	(1,'Greeting','/public/image/category-greeting.png'),
+	(2,'Vehicles','/public/image/category-vehicles.png'),
+	(3,'Animals','/public/image/category-animals.png'),
 	(4,'Category 4',''),
 	(5,'Category 5',''),
 	(6,'Category 6',''),
@@ -290,7 +290,7 @@ LOCK TABLES `lesson_log` WRITE;
 INSERT INTO `lesson_log` (`id`, `accountId`, `lessonId`, `date`, `progress`)
 VALUES
 	(1,1,1,'2023-01-02 20:49:01',100),
-	(2,1,2,'2023-01-02 20:56:21',50),
+	(2,1,2,'2023-01-06 10:20:44',50),
 	(3,1,3,'2023-01-02 20:56:32',50);
 
 /*!40000 ALTER TABLE `lesson_log` ENABLE KEYS */;
