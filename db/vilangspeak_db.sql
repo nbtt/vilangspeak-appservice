@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.31)
 # Database: vilangspeak_db
-# Generation Time: 2023-01-04 01:43:38 +0000
+# Generation Time: 2023-01-06 02:47:15 +0000
 # ************************************************************
 
 
@@ -127,26 +127,26 @@ LOCK TABLES `card` WRITE;
 
 INSERT INTO `card` (`id`, `type`, `audioUrl`, `content`, `translation`, `lessonId`)
 VALUES
-	(1,0,'','tôi','I, me',1),
-	(2,0,'','bạn','you, friend',1),
-	(3,0,'','xin chào','hello, hi',1),
-	(4,0,'','mọi người','everyone',1),
-	(5,1,'','xin chào mọi người','hello everyone',1),
-	(6,1,'','chào bạn','hello, hi (same age)',1),
-	(7,0,'','là','to be',1),
-	(8,0,'','tên','name',1),
-	(9,1,'','tên tôi là An','my name is An',1),
-	(10,0,'','đến','come, arrive',1),
-	(11,0,'','Hà Nội','Hanoi',1),
-	(12,1,'','tôi đến từ Hà Nội','I come from Ha Noi',1),
-	(13,0,'','đang','to be doing something',1),
-	(14,0,'','học','study, learn',1),
-	(15,0,'','Tiếng Việt','Vietnamese',1),
-	(16,1,'','tôi đang học Tiếng Việt','I am learning Vietnamese',1),
-	(17,0,'','gì','what',1),
-	(18,1,'','bạn tên gì','what is your name',1),
-	(19,0,'','đâu','where',1),
-	(20,1,'','bạn đến từ đâu','where are you from',1);
+	(1,0,'/public/audio/toi.wav','tôi','I, me',1),
+	(2,0,'/public/audio/ban.wav','bạn','you, friend',1),
+	(3,0,'/public/audio/xinchao.wav','xin chào','hello, hi',1),
+	(4,0,'/public/audio/moinguoi.wav','mọi người','everyone',1),
+	(5,1,'/public/audio/xinchaomoinguoi.wav','xin chào mọi người','hello everyone',1),
+	(6,1,'/public/audio/chaoban.wav','chào bạn','hello, hi (same age)',1),
+	(7,0,'/public/audio/la.wav','là','to be',1),
+	(8,0,'/public/audio/ten.wav','tên','name',1),
+	(9,1,'/public/audio/toitenlaan.wav','tên tôi là An','my name is An',1),
+	(10,0,'/public/audio/den.wav','đến','come, arrive',1),
+	(11,0,'/public/audio/hanoi.wav','Hà Nội','Hanoi',1),
+	(12,1,'/public/audio/toidentuhanoi.wav','tôi đến từ Hà Nội','I come from Ha Noi',1),
+	(13,0,'/public/audio/dang.wav','đang','to be doing something',1),
+	(14,0,'/public/audio/hoc.wav','học','study, learn',1),
+	(15,0,'/public/audio/tiengviet.wav','Tiếng Việt','Vietnamese',1),
+	(16,1,'/public/audio/toidanghoctiengviet.wav','tôi đang học Tiếng Việt','I am learning Vietnamese',1),
+	(17,0,'/public/audio/gi.wav','gì','what',1),
+	(18,1,'/public/audio/bantengi.wav','bạn tên gì','what is your name',1),
+	(19,0,'/public/audio/dau.wav','đâu','where',1),
+	(20,1,'/public/audio/bandentudau.wav','bạn đến từ đâu','where are you from',1);
 
 /*!40000 ALTER TABLE `card` ENABLE KEYS */;
 UNLOCK TABLES;
