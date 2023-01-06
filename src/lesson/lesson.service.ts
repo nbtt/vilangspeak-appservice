@@ -63,19 +63,25 @@ export class LessonService {
             // not complete any lesson, return first 2 lessons
             return this.lessonRepository.find({
                 take: 2,
-                relations: {
-                    category: true,
+                loadRelationIds: {
+                    relations: ['category'],
                 },
                 order: {
                     id: 'ASC',
                 }
-            }).then(lessons => lessons.map(lesson => this.createEmptyLessonLog(lesson)));
+            });
         }
+
+        // first recommend lesson
+        const firstRecommendLesson = lastViewLessonLog.lesson;
 
         // try to get next lesson or previous lesson (if next lesson not found)
         const nextLesson = await this.lessonRepository.findOne({
             where: {
                 id: MoreThan(lastViewLessonLog.lesson.id),
+            },
+            loadRelationIds: {
+                relations: ['category'],
             },
             order: {
                 id: 'ASC',
@@ -86,6 +92,9 @@ export class LessonService {
                 where: {
                     id: LessThan(lastViewLessonLog.lesson.id),
                 },
+                loadRelationIds: {
+                    relations: ['category'],
+                },
                 order: {
                     id: 'DESC',
                 }
@@ -95,33 +104,10 @@ export class LessonService {
         const secondRecommendLesson = nextLesson || previousLesson;
         if (secondRecommendLesson == null) {
             // Last view lesson is the only lesson exists
-            return [lastViewLessonLog];
-        }
-
-        // try to get progress of second recommended lesson
-        let secondRecommendLessonLog = await this.lessonLogRespository.findOne({
-            where: {
-                account: {
-                    id: accountId,
-                },
-                lesson: {
-                    id: secondRecommendLesson.id,
-                }
-            },
-            relations: {
-                lesson: {
-                    category: true,
-                },
-                account: false,
-            },
-        });
-        
-        if (secondRecommendLessonLog == null) {
-            // no progress found, make default lesson log
-            secondRecommendLessonLog = this.createEmptyLessonLog(secondRecommendLesson);
+            return [firstRecommendLesson];
         }
         
-        return [lastViewLessonLog, secondRecommendLessonLog];
+        return [firstRecommendLesson, secondRecommendLesson];
     }
 
     getProgressAll(accountId: number, limit: number = 10, offset: number = 0): Promise<LessonLog[]> {
@@ -209,15 +195,5 @@ export class LessonService {
         });
 
         return lesson != null;
-    }
-
-    createEmptyLessonLog(lesson: Lesson): LessonLog {
-        return {
-            lesson: lesson,
-            account: null,
-            id: null,
-            date: null,
-            progress: null,
-        }
     }
 }

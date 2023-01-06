@@ -4,6 +4,7 @@ import { GetAllDTO } from 'src/dto/get-all.dto';
 import { QueryByAccountIdDTO, QueryByIdDTO } from 'src/dto/query-by-id.dto';
 import { SetLessonProgressDTO } from 'src/dto/progress.dto';
 import { LessonService } from './lesson.service';
+import { Category } from 'src/entity/category.entity';
 
 @Controller('/app/lesson')
 export class LessonController {
@@ -31,28 +32,21 @@ export class LessonController {
     async getRecommend(
         @Query() query: QueryByAccountIdDTO,
     ) {
-        const recommendLessonLogs = await this.lessonService.getRecommend(query.account_id);
-        const recommendLessons = recommendLessonLogs.map(lessonLog => {
+        const recommendLessons = await this.lessonService.getRecommend(query.account_id);
+        const recommendLessonsResponse = recommendLessons.map(lesson => {
             return {
-                id: lessonLog.lesson.id,
-                name: lessonLog.lesson.name,
-                visible: lessonLog.lesson.visible,
-                category: lessonLog.lesson.category,
-                progress: (lessonLog.id == null) ? {
-                    value: 0,
-                    last_date: 0,
-                } : {
-                    value: lessonLog.progress,
-                    last_date: lessonLog.date.valueOf(),
-                }
+                id: lesson.id,
+                name: lesson.name,
+                visible: lesson.visible,
+                category: (lesson.category instanceof Category) ? lesson.category.id : lesson.category,
             }
         });
 
         return {
             timestamp: Date.now(),
             data: {
-                lessons: recommendLessons,
-                total: recommendLessons.length,
+                lessons: recommendLessonsResponse,
+                total: recommendLessonsResponse.length,
             }
         }
     }
