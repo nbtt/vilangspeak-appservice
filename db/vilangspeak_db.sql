@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.31)
 # Database: vilangspeak_db
-# Generation Time: 2023-01-06 10:58:23 +0000
+# Generation Time: 2023-01-07 04:16:43 +0000
 # ************************************************************
 
 
@@ -178,13 +178,11 @@ VALUES
 	(3,0,0,'Examples',2),
 	(4,1,1,'*Bạn* là ai?\nWho are *you*?\n\nAnh ấy là *bạn* của tôi.\nHe is my *friend*.',2),
 	(5,0,2,'Pronunciation tips',2),
-	(6,0,3,'Vietnamese have 6 *tones*. Please pay attention to the tone when you pronounce the word. This word have *Heavy Tone* (Thanh Nặng), which is marked as a dot under the word.',2),
+	(6,0,3,'This word have *Heavy Tone* (Thanh Nặng), which is marked as a dot under the word.',2),
 	(7,0,0,'Usage',3),
-	(8,1,1,'This word can be use as a sentence to greet people formally.\nIt can be use as \"*chào*\", but it can have different meaning depending on context.',3),
+	(8,1,1,'This word can be use as a sentence to greet people formally.',3),
 	(9,0,2,'Examples',3),
 	(10,1,3,'*Xin chào* mọi người.\n*Hello* everyone.\n\n*Chào* mọi người, em vừa đến đây.\n*Hello* everyone, I have just came here.\n\n*Chào* anh, giờ em về nhà.\n*Good bye*, I am going home.',3),
-	(11,0,4,'Pronunciation tips',3),
-	(12,1,5,'*xin* has Mid-Level Tone (Thanh Ngang) (no mark) and *chào* have Low Falling Tone (Thanh Huyền) (mark as *`* above the word)',3),
 	(13,1,0,'*mọi* means \"all\", \"every\".\n\"người\" means \"man\", \"person\", \"people\", \"individual\"',4),
 	(14,0,0,'Examples',7),
 	(15,1,1,'Thời gian *là* tiền bạc.\nTime *is* money.',7),
@@ -289,11 +287,44 @@ LOCK TABLES `lesson_log` WRITE;
 
 INSERT INTO `lesson_log` (`id`, `accountId`, `lessonId`, `date`, `progress`)
 VALUES
-	(1,1,1,'2023-01-02 20:49:01',100),
-	(2,1,2,'2023-01-06 10:20:44',50),
+	(1,1,1,'2023-01-07 10:57:02',50),
+	(2,1,2,'2023-01-07 10:34:06',100),
 	(3,1,3,'2023-01-02 20:56:32',50);
 
 /*!40000 ALTER TABLE `lesson_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table test_log
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `test_log`;
+
+CREATE TABLE `test_log` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date` timestamp NOT NULL,
+  `times` int NOT NULL,
+  `scoreHighest` int NOT NULL,
+  `scoreLowest` int NOT NULL,
+  `scoreSum` int NOT NULL,
+  `accountId` int DEFAULT NULL,
+  `testId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_0351b75994b61c0333b22dbac03` (`accountId`),
+  KEY `FK_89cb32eeeeb4359f3cb3e41692a` (`testId`),
+  CONSTRAINT `FK_0351b75994b61c0333b22dbac03` FOREIGN KEY (`accountId`) REFERENCES `account` (`id`),
+  CONSTRAINT `FK_89cb32eeeeb4359f3cb3e41692a` FOREIGN KEY (`testId`) REFERENCES `testx` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `test_log` WRITE;
+/*!40000 ALTER TABLE `test_log` DISABLE KEYS */;
+
+INSERT INTO `test_log` (`id`, `date`, `times`, `scoreHighest`, `scoreLowest`, `scoreSum`, `accountId`, `testId`)
+VALUES
+	(3,'2023-01-07 11:10:53',5,10,8,45,1,2),
+	(4,'2023-01-07 11:12:57',3,9,8,26,1,1);
+
+/*!40000 ALTER TABLE `test_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
