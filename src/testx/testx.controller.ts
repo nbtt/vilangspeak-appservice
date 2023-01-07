@@ -3,6 +3,7 @@ import { GetAllByIdDTO } from 'src/dto/get-all-by-id.dto';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { SetTestProgressDTO } from 'src/dto/progress.dto';
 import { QueryByAccountIdDTO, QueryByIdDTO } from 'src/dto/query-by-id.dto';
+import { Category } from 'src/entity/category.entity';
 import { TestxService } from './testx.service';
 
 @Controller('/app/test')
@@ -25,6 +26,29 @@ export class TestxController {
                 total: tests.length,
             },
         };
+    }
+
+    @Get('/recommend')
+    async getRecommend(
+        @Query() query: QueryByAccountIdDTO,
+    ) {
+        const recommendTests = await this.testxService.getRecommend(query.account_id);
+        const recommendTestsResponse = recommendTests.map(test => {
+            return {
+                id: test.id,
+                name: test.name,
+                visible: test.visible,
+                category: (test.category instanceof Category) ? test.category.id : test.category,
+            }
+        });
+
+        return {
+            timestamp: Date.now(),
+            data: {
+                tests: recommendTestsResponse,
+                total: recommendTestsResponse.length,
+            }
+        }
     }
 
     @Get('/all/progress')

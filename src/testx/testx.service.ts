@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TestLog } from 'src/entity/test-log.entity';
 import { Testx } from 'src/entity/testx.entity';
-import { QueryFailedError, Repository } from 'typeorm';
+import { LessThan, MoreThan, QueryFailedError, Repository } from 'typeorm';
 
 @Injectable()
 export class TestxService {
@@ -21,6 +21,75 @@ export class TestxService {
                  relations: ['category'],
             },
         });
+    }
+
+    async getRecommend(accountId: number) {
+        const lastViewTestLog = await this.testLogRespository.findOne({
+            where: {
+                account: {
+                    id: accountId,
+                }
+            },
+            relations: {
+                test: {
+                    category: true,
+                },
+                account: false,
+            },
+            order: {
+                date: 'DESC',
+            }
+        });
+
+        if (lastViewTestLog == null) {
+            // not complete any test, return first 2 tests
+            return this.testxRepository.find({
+                take: 2,
+                loadRelationIds: {
+                    relations: ['category'],
+                },
+                order: {
+                    id: 'ASC',
+                }
+            });
+        }
+
+        // first recommend test
+        const firstRecommendTest = lastViewTestLog.test;
+
+        // try to get next lesson or previous lesson (if next lesson not found)
+        const nextTest = await this.testxRepository.findOne({
+            where: {
+                id: MoreThan(lastViewTestLog.test.id),
+            },
+            loadRelationIds: {
+                relations: ['category'],
+            },
+            order: {
+                id: 'ASC',
+            },
+        });
+
+        const previousTest = (nextTest == null) ? (await this.testxRepository.findOne({
+                where: {
+                    id: LessThan(lastViewTestLog.test.id),
+                },
+                loadRelationIds: {
+                    relations: ['category'],
+                },
+                order: {
+                    id: 'DESC',
+                }
+            }))
+            : null;
+            
+        const secondRecommendTest = nextTest || previousTest;
+        if (secondRecommendTest == null) {
+            // Last view test is the only test exists
+            return [firstRecommendTest];
+        }
+        
+        return [firstRecommendTest, secondRecommendTest];
     }
 
     getProgressAll(accountId: number, limit: number = 10, offset: number = 0): Promise<TestLog[]> {
