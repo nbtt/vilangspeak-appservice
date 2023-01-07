@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TestLog } from 'src/entity/test-log.entity';
 import { Testx } from 'src/entity/testx.entity';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 
 @Injectable()
 export class TestxService {
     constructor(
         @InjectRepository(Testx)
         private testxRepository: Repository<Testx>,
+        @InjectRepository(TestLog)
+        private testLogRespository: Repository<TestLog>,
     ) {}
 
     getAll(limit: number = 10, offset: number = 0): Promise<Testx[]> {
@@ -18,5 +21,104 @@ export class TestxService {
                  relations: ['category'],
             },
         });
+    }
+
+    getProgressAll(accountId: number, limit: number = 10, offset: number = 0): Promise<TestLog[]> {
+        return this.testLogRespository.find({
+            take: limit,
+            skip: offset,
+            where: {
+                account: {
+                    id: accountId,
+                },
+            },
+            loadRelationIds: {
+                relations: ['test'],
+            },
+            relations: {
+                account: false,
+            }
+        })
+    }
+
+    getProgress(id: number, accountId: number) {
+        return this.testLogRespository.findOne({
+            where: {
+                account: {
+                    id: accountId,
+                },
+                test: {
+                    id: id,
+                }
+            },
+            loadRelationIds: {
+                relations: ['test'],
+            },
+            relations: {
+                account: false,
+            }
+        })
+    }
+
+    async setProgress(id: number, accountId: number, score: number) {
+        let testLog = await this.getProgress(id, accountId);
+        if (testLog == null) {
+            await this.testLogRespository.insert({
+                date: new Date(),
+                scoreSum: score,
+                scoreHighest: score,
+                scoreLowest: score,
+                times: 1,
+                account: {
+                    id: accountId,
+                },
+                test: {
+                    id: id,
+                }
+            }).catch(error => {
+                if (error instanceof QueryFailedError) {
+                    throw new HttpException("Not found account or test", HttpStatus.NOT_FOUND);
+                }
+            });
+        }
+        else {
+            let updateFields: {[k: string]: any} = {
+                date: new Date(),
+                times: testLog.times + 1,
+                scoreSum: testLog.scoreSum + score,
+            }
+            if (score > testLog.scoreHighest) {
+                updateFields.scoreHighest = score;
+            }
+            if (score < testLog.scoreLowest) {
+                updateFields.scoreLowest = score;
+            }
+
+            await this.testLogRespository.update({
+                account: {
+                    id: accountId,
+                },
+                test: {
+                    id: id,
+                }
+            }, updateFields).catch(error => {
+                if (error instanceof QueryFailedError) {
+                    throw new HttpException("Not found account or test", HttpStatus.NOT_FOUND);
+                }
+            });
+        }
+    }
+
+    async isTestExisted(id: number): Promise<Boolean> {
+        const test = await this.testxRepository.findOne({
+            where: {
+                id: id,
+            },
+            select: {
+                id: true,
+            }
+        });
+
+        return test != null;
     }
 }
