@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.31)
 # Database: vilangspeak_db
-# Generation Time: 2023-01-07 04:16:43 +0000
+# Generation Time: 2023-01-07 10:29:32 +0000
 # ************************************************************
 
 
@@ -178,11 +178,11 @@ VALUES
 	(3,0,0,'Examples',2),
 	(4,1,1,'*Bạn* là ai?\nWho are *you*?\n\nAnh ấy là *bạn* của tôi.\nHe is my *friend*.',2),
 	(5,0,2,'Pronunciation tips',2),
-	(6,0,3,'This word have *Heavy Tone* (Thanh Nặng), which is marked as a dot under the word.',2),
+	(6,1,3,'This word have *Heavy Tone* (Thanh Nặng), which is marked as a dot under the word.',2),
 	(7,0,0,'Usage',3),
 	(8,1,1,'This word can be use as a sentence to greet people formally.',3),
 	(9,0,2,'Examples',3),
-	(10,1,3,'*Xin chào* mọi người.\n*Hello* everyone.\n\n*Chào* mọi người, em vừa đến đây.\n*Hello* everyone, I have just came here.\n\n*Chào* anh, giờ em về nhà.\n*Good bye*, I am going home.',3),
+	(10,1,3,'*Xin chào* mọi người.\n*Hello* everyone.\n\n*Chào* mọi người, em vừa đến đây.\n*Hello* everyone, I have just came here.',3),
 	(13,1,0,'*mọi* means \"all\", \"every\".\n\"người\" means \"man\", \"person\", \"people\", \"individual\"',4),
 	(14,0,0,'Examples',7),
 	(15,1,1,'Thời gian *là* tiền bạc.\nTime *is* money.',7),
