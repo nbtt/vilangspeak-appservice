@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.31)
 # Database: vilangspeak_db
-# Generation Time: 2023-01-07 10:29:32 +0000
+# Generation Time: 2023-01-07 10:56:58 +0000
 # ************************************************************
 
 
@@ -66,7 +66,13 @@ VALUES
 	(1,'Get 7 day series','/public/image/achievement-7-days.png'),
 	(2,'Get full points for 5 tests','/public/image/achievement-full-5-tests.png'),
 	(3,'Achievement 3',''),
-	(4,'Achievement 4','');
+	(4,'Achievement 4',''),
+	(5,'Achievement 5',''),
+	(6,'Achievement 6',''),
+	(7,'Achievement 7',''),
+	(8,'Achievement 8',''),
+	(9,'Achievement 9',''),
+	(10,'Achievement 10','');
 
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -99,7 +105,13 @@ VALUES
 	(3,'2023-01-04 00:11:41',1,3),
 	(4,'2023-01-04 00:11:56',2,3),
 	(5,'2023-01-04 00:12:04',2,1),
-	(6,'2023-01-04 00:12:35',2,4);
+	(6,'2023-01-04 00:12:35',2,4),
+	(7,'2023-01-07 17:52:41',2,5),
+	(8,'2023-01-07 17:52:55',1,6),
+	(9,'2023-01-07 17:52:59',1,7),
+	(10,'2023-01-07 17:53:34',1,8),
+	(11,'2023-01-07 17:54:11',2,9),
+	(12,'2023-01-07 17:54:14',1,10);
 
 /*!40000 ALTER TABLE `achievement_log` ENABLE KEYS */;
 UNLOCK TABLES;
