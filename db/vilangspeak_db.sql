@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.31)
 # Database: vilangspeak_db
-# Generation Time: 2023-01-07 10:56:58 +0000
+# Generation Time: 2023-01-07 20:10:59 +0000
 # ************************************************************
 
 
@@ -147,7 +147,7 @@ VALUES
 	(6,1,'/public/audio/chaoban.wav','chào bạn','hello, hi (same age)',1),
 	(7,0,'/public/audio/la.wav','là','to be',1),
 	(8,0,'/public/audio/ten.wav','tên','name',1),
-	(9,1,'/public/audio/toitenlaan.wav','tên tôi là An','my name is An',1),
+	(9,1,'/public/audio/toitenlaan.wav','tôi tên là An','my name is An',1),
 	(10,0,'/public/audio/den.wav','đến','come, arrive',1),
 	(11,0,'/public/audio/hanoi.wav','Hà Nội','Hanoi',1),
 	(12,1,'/public/audio/toidentuhanoi.wav','tôi đến từ Hà Nội','I come from Ha Noi',1),
