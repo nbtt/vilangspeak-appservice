@@ -165,6 +165,10 @@ export class LessonController {
         @Param() param: QueryByIdDTO,
         @Body() body: SetLessonProgressDTO,
     ) {
+        if (!(await this.lessonService.isLessonExisted(param.id))) {
+            throw new HttpException("Lesson not found", HttpStatus.NOT_FOUND);
+        }
+
         await this.lessonService.setProgress(param.id, body.account_id, body.value);
         return {
             timestamp: Date.now(),
