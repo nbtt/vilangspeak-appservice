@@ -11,16 +11,18 @@ export class AccountController {
     async getInfo(
         @Param() param: QueryByIdDTO,
     ) {
-        const account = await this.accountService.getInfo(param.id);
+        const account = await this.accountService.getInfo({id: param.id});
 
         if (account == null) {
             throw new HttpException(`Not found account by id ${param.id}`, HttpStatus.NOT_FOUND);
         }
+
+        const {password, ...result} = account;
         
         return {
             timestamp: Date.now(),
             data: {
-                account: account,
+                account: result,
             },
         };
     } 

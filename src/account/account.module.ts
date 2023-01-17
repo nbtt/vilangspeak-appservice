@@ -8,6 +8,7 @@ import { AchievementLog } from 'src/entity/achievement-log';
 @Module({
   imports: [TypeOrmModule.forFeature([Account, AchievementLog])],
   providers: [AccountService],
-  controllers: [AccountController]
+  controllers: [AccountController],
+  exports: [AccountService],
 })
 export class AccountModule {}

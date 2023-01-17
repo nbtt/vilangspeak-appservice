@@ -13,10 +13,11 @@ export class AccountService {
         private achievementLogRepository: Repository<AchievementLog>,
     ) {}
 
-    getInfo(id: number): Promise<Account> {
-        return this.accountRepository.findOneBy({
-            id: id,
-        })
+    getInfo(filter: {
+        id?: number, 
+        username?: string
+    }): Promise<Account> {
+        return this.accountRepository.findOneBy(filter);
     }
 
     getAchievements(id: number): Promise<AchievementLog[]> {
