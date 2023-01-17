@@ -19,6 +19,9 @@ export class Account {
     @Column()
     username: string;
 
+    @Column()
+    password: string;
+
     @Column({type: "tinyint"})
     role: AccountRole;
 }

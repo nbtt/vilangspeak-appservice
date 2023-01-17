@@ -12,7 +12,7 @@ import { AccountModule } from './account/account.module';
 import { entities } from './entity/entities';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-// import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { join } from 'path';
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('db.host'),
-        port: configService.get<number>('db.port'),
+        port: +configService.get<number>('db.port'),
         username: configService.get<string>('db.username'),
         password: configService.get<string>('db.password'),
         database: configService.get<string>('db.database'),
@@ -42,7 +42,7 @@ import { join } from 'path';
     CategoryModule,
     TestxModule,
     AccountModule,
-    // AuthModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
