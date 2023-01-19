@@ -1,5 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { AccountRole } from 'src/entity/account.entity';
 import { RolesGuard } from './roles.guard';
 
 // Check if account is authenticated, then
@@ -16,7 +17,7 @@ export class RolesAccountGuard extends RolesGuard implements CanActivate {
     const requestId = parseInt(request.params['id']);
 
     // admin role will proceed without any other checks
-    if (user.role == 0) {
+    if (user.role == AccountRole.ADMIN) {
       return true;
     }
 
