@@ -1,4 +1,5 @@
-import { Controller, Get, HttpException, HttpStatus, Param, Query } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
+import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { QueryByIdDTO } from 'src/dto/query-by-id.dto';
 import { AccountService } from './account.service';
@@ -7,6 +8,7 @@ import { AccountService } from './account.service';
 export class AccountController {
     constructor(private accountService: AccountService) {}
 
+    @UseGuards(RolesAccountGuard)
     @Get('/:id/info')
     async getInfo(
         @Param() param: QueryByIdDTO,
@@ -27,12 +29,16 @@ export class AccountController {
         };
     } 
 
+    @UseGuards(RolesAccountGuard)
     @Get('/:id/achievement')
     async getAllAchievement(
         @Param() param: QueryByIdDTO,
         @Query() query: GetAllDTO,
     ) {
-        const achievements = await this.accountService.getAchievements(param.id);
+        const limit = query.limit || 10;
+        const offset = query.offset || 0;
+
+        const achievements = await this.accountService.getAchievements(param.id, limit, offset);
 
         const achievementsResponse = achievements.map((item) => {
             return {

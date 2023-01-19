@@ -20,8 +20,10 @@ export class AccountService {
         return this.accountRepository.findOneBy(filter);
     }
 
-    getAchievements(id: number): Promise<AchievementLog[]> {
+    getAchievements(id: number, limit: number, offset: number): Promise<AchievementLog[]> {
         return this.achievementLogRepository.find({
+            take: limit,
+            skip: offset,
             where: {
                 account: {
                     id: id,
