@@ -6,5 +6,9 @@ db:
   database: 'vilangspeak_db'
 
 jwt:
-  secret: 'bKjFMNIA1e'
-  exp_time: '60s'
+  secret:
+    access: 'bKjFMNIA1e'
+    refresh: 'DYpLWlvNdy'
+  exp_time:
+    access: '60s'
+    refresh: '5m'
