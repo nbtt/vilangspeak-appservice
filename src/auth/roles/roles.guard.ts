@@ -29,14 +29,12 @@ export class RolesGuard extends JwtAuthGuard implements CanActivate {
     
     // check if requested role matches defined roles
     const roles = this.reflector.get<AccountRole[]>('roles', context.getHandler());
-    // no defined role means match any role
-    if (!roles) {
-      return true;
-    }
-
     const request = context.switchToHttp().getRequest();
-    if (!this.matchRoles(request, roles)) {
-      return false;
+    // check if exists defined roles
+    if (roles) {
+      if (!this.matchRoles(request, roles)) {
+        return false;
+      }
     }
 
     // check if current login role equals to login role in token
