@@ -1,9 +1,12 @@
 import { Controller, Get, HttpException, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
 import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
+import { LoginRole } from 'src/auth/roles/roles.login.decorator';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { QueryByIdDTO } from 'src/dto/query-by-id.dto';
+import { AccountRole } from 'src/entity/account.entity';
 import { AccountService } from './account.service';
 
+@LoginRole(AccountRole.USER)
 @Controller('/app/account')
 export class AccountController {
     constructor(private accountService: AccountService) {}

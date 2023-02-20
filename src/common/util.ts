@@ -8,3 +8,11 @@ export function createTransformerEnum<T>(enumType: T) {
         },
     }
 }
+
+export function getCurrentNumericDate(): number {
+    return Math.floor(Date.now() / 1000);
+}
+
+export function getDateFromNumericDate(numericDate: number): Date {
+    return new Date(numericDate * 1000);
+}
