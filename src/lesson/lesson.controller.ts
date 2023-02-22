@@ -9,6 +9,7 @@ import { LoginRole } from 'src/auth/roles/roles.login.decorator';
 import { AccountRole } from 'src/entity/account.entity';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
+import { getSuccessResponse } from 'src/common/util';
 
 @LoginRole(AccountRole.USER)
 @Controller('/app/lesson')
@@ -181,9 +182,6 @@ export class LessonController {
         }
 
         await this.lessonService.setProgress(param.id, body.account_id, body.value);
-        return {
-            timestamp: Date.now(),
-            status: "SUCCESS",
-        }
+        return getSuccessResponse();
     }
 }

@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, U
 import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { LoginRole } from 'src/auth/roles/roles.login.decorator';
+import { getSuccessResponse } from 'src/common/util';
 import { GetAllByIdDTO } from 'src/dto/get-all-by-id.dto';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { SetTestProgressDTO } from 'src/dto/progress.dto';
@@ -150,9 +151,6 @@ export class TestxController {
         }
 
         await this.testxService.setProgress(param.id, body.account_id, body.score);
-        return {
-            timestamp: Date.now(),
-            status: "SUCCESS",
-        }
+        return getSuccessResponse();
     }
 }

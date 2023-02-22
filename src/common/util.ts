@@ -16,3 +16,10 @@ export function getCurrentNumericDate(): number {
 export function getDateFromNumericDate(numericDate: number): Date {
     return new Date(numericDate * 1000);
 }
+
+export function getSuccessResponse() {
+    return {
+        timestamp: Date.now(),
+        status: "SUCCESS",
+    }
+}
