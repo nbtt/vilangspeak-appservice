@@ -1,15 +1,21 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { GetAllByIdDTO } from 'src/dto/get-all-by-id.dto';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { QueryByAccountIdDTO, QueryByIdDTO } from 'src/dto/query-by-id.dto';
 import { SetLessonProgressDTO } from 'src/dto/progress.dto';
 import { LessonService } from './lesson.service';
 import { Category } from 'src/entity/category.entity';
+import { LoginRole } from 'src/auth/roles/roles.login.decorator';
+import { AccountRole } from 'src/entity/account.entity';
+import { RolesGuard } from 'src/auth/roles/roles.guard';
+import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
 
+@LoginRole(AccountRole.USER)
 @Controller('/app/lesson')
 export class LessonController {
     constructor(private lessonService: LessonService) {}
 
+    @UseGuards(RolesGuard)
     @Get('/all')
     async getAll(
         @Query() query: GetAllDTO
@@ -28,6 +34,7 @@ export class LessonController {
         };
     }
 
+    @UseGuards(RolesGuard)
     @Get('/recommend')
     async getRecommend(
         @Query() query: QueryByAccountIdDTO,
@@ -51,6 +58,7 @@ export class LessonController {
         }
     }
 
+    @UseGuards(RolesAccountGuard)
     @Get('/:id')
     async getOne (
         @Param() param: QueryByIdDTO,
@@ -92,6 +100,7 @@ export class LessonController {
         }
     }
 
+    @UseGuards(RolesGuard)
     @Get('/all/progress')
     async getProgressAll(
         @Query() query: GetAllByIdDTO,
@@ -121,6 +130,7 @@ export class LessonController {
         };
     }
 
+    @UseGuards(RolesAccountGuard)
     @Get('/:id/progress')
     async getProgress(
         @Param() param: QueryByIdDTO,
@@ -160,6 +170,7 @@ export class LessonController {
         };
     }
 
+    @UseGuards(RolesAccountGuard)
     @Post('/:id/progress')
     async setProgress(
         @Param() param: QueryByIdDTO,

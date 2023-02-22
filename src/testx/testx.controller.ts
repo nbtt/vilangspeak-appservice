@@ -1,15 +1,21 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
+import { RolesGuard } from 'src/auth/roles/roles.guard';
+import { LoginRole } from 'src/auth/roles/roles.login.decorator';
 import { GetAllByIdDTO } from 'src/dto/get-all-by-id.dto';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { SetTestProgressDTO } from 'src/dto/progress.dto';
 import { QueryByAccountIdDTO, QueryByIdDTO } from 'src/dto/query-by-id.dto';
+import { AccountRole } from 'src/entity/account.entity';
 import { Category } from 'src/entity/category.entity';
 import { TestxService } from './testx.service';
 
+@LoginRole(AccountRole.USER)
 @Controller('/app/test')
 export class TestxController {
     constructor(private testxService: TestxService) {}
 
+    @UseGuards(RolesGuard)
     @Get('/all')
     async getAll(
         @Query() query: GetAllDTO
@@ -28,6 +34,7 @@ export class TestxController {
         };
     }
 
+    @UseGuards(RolesGuard)
     @Get('/recommend')
     async getRecommend(
         @Query() query: QueryByAccountIdDTO,
@@ -51,6 +58,7 @@ export class TestxController {
         }
     }
 
+    @UseGuards(RolesGuard)
     @Get('/all/progress')
     async getProgressAll(
         @Query() query: GetAllByIdDTO,
@@ -81,6 +89,7 @@ export class TestxController {
         };
     }
 
+    @UseGuards(RolesAccountGuard)
     @Get('/:id/progress')
     async getProgress(
         @Param() param: QueryByIdDTO,
@@ -130,6 +139,7 @@ export class TestxController {
         };
     }
 
+    @UseGuards(RolesAccountGuard)
     @Post('/:id/progress')
     async setProgress(
         @Param() param: QueryByIdDTO,
