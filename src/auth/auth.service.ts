@@ -59,11 +59,11 @@ export class AuthService {
 
   createTokens(payload: any) {
     return {
-      access_token: this.jwtService.sign(payload, {
+      accessToken: this.jwtService.sign(payload, {
         secret: this.configService.get<string>('jwt.secret.access'),
         expiresIn: this.configService.get<string>('jwt.exp_time.access'),
       }),
-      refresh_token: this.jwtService.sign(payload, {
+      refreshToken: this.jwtService.sign(payload, {
         secret: this.configService.get<string>('jwt.secret.refresh'),
         expiresIn: this.configService.get<string>('jwt.exp_time.refresh'),
       }),
