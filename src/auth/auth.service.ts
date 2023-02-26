@@ -53,8 +53,14 @@ export class AuthService {
     this.updateLoginTime(account, loginRole, logoutTime);
   }
 
-  refresh(account: any, loginRole: AccountRole = AccountRole.USER) {
-    
+  convertJwtToAccount(jwtPayload: any) {
+    return {
+      id: jwtPayload.sub,
+      username: jwtPayload.username,
+      loginRole: jwtPayload.login_role,
+      role: jwtPayload.role,
+      iat: jwtPayload.iat,
+    }
   }
 
   createTokens(payload: any) {

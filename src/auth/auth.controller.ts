@@ -28,12 +28,7 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Post('/logout')
     async logout(@Request() req) {
-        const account = {
-            id: req.user.sub,
-            username: req.user.username,
-            loginRole: req.user.login_role,
-            role: req.user.role,
-        }
+        const account = this.authService.convertJwtToAccount(req.user);
         this.authService.logout(account);
         return getSuccessResponse();
     }
