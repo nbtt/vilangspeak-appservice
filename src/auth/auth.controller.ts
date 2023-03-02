@@ -23,7 +23,11 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Get('/ping')
     async ping(@Request() req) {
-        return req.user
+        const jwtUser = req.user;
+        return {
+            timestamp: Date.now(),
+            ...jwtUser,
+        }
     }
 
     @UseGuards(RolesGuard)
