@@ -95,4 +95,18 @@ export class AuthService {
       skipUpdateIfNoValuesChanged: true,
     })
   }
+
+  async checkLoginTime(account: any, loginRole: AccountRole, timeToCheck: number) {
+    const selectedAccount = await this.accountLoginRepository.findOne({
+      where: {
+        accountId: account.id,
+        role: loginRole,
+      },
+      select: {
+        date: true,
+      }
+    });
+
+    return getDateFromNumericDate(timeToCheck).getTime() >= selectedAccount.date.getTime()
+  }
 }
