@@ -4,6 +4,7 @@ import { AccountRole } from 'src/entity/account.entity';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 import { LocalAuthGuard } from './local/local.guard';
+import { RolesGuard } from './roles/roles.guard';
 import { LoginRole } from './roles/roles.login.decorator';
 import { RolesRefreshGuard } from './roles/roles.refresh.guard';
 
@@ -25,7 +26,7 @@ export class AuthController {
         return req.user
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(RolesGuard)
     @Post('/logout')
     async logout(@Request() req) {
         const account = this.authService.convertJwtToAccount(req.user);
