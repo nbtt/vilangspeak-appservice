@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.31)
 # Database: vilangspeak_db
-# Generation Time: 2023-01-07 20:10:59 +0000
+# Generation Time: 2023-03-02 19:13:04 +0000
 # ************************************************************
 
 
@@ -31,18 +31,43 @@ CREATE TABLE `account` (
   `birthday` date NOT NULL,
   `username` varchar(255) NOT NULL,
   `role` tinyint NOT NULL,
+  `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
 
-INSERT INTO `account` (`id`, `name`, `birthday`, `username`, `role`)
+INSERT INTO `account` (`id`, `name`, `birthday`, `username`, `role`, `password`)
 VALUES
-	(1,'Tuan','2001-02-28','nbtt',0),
-	(2,'Toai Tran','2001-12-30','toaitran2001',1);
+	(1,'Tuan','2001-02-28','nbtt',0,'123456'),
+	(2,'Toai Tran','2001-12-30','toaitran2001',1,'124356');
 
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table account_login
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `account_login`;
+
+CREATE TABLE `account_login` (
+  `accountId` int NOT NULL,
+  `role` tinyint NOT NULL,
+  `date` timestamp NOT NULL,
+  PRIMARY KEY (`accountId`,`role`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `account_login` WRITE;
+/*!40000 ALTER TABLE `account_login` DISABLE KEYS */;
+
+INSERT INTO `account_login` (`accountId`, `role`, `date`)
+VALUES
+	(1,1,'2023-03-03 01:58:17'),
+	(2,1,'2023-02-20 10:00:42');
+
+/*!40000 ALTER TABLE `account_login` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
