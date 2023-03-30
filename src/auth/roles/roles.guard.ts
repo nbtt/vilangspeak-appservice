@@ -1,5 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { getMetadataFromControllerAndHandler } from 'src/common/util';
 import { AccountRole } from 'src/entity/account.entity';
 import { JwtAuthGuard } from '../jwt/jwt.guard';
 
@@ -38,10 +39,10 @@ export class RolesGuard extends JwtAuthGuard implements CanActivate {
     }
 
     // check if current login role equals to login role in token
-    const loginRole = this.reflector.get<AccountRole>('loginRole', context.getHandler());
+    const loginRoles = getMetadataFromControllerAndHandler<AccountRole>(context, this.reflector, 'loginRole');
     // perform checking only if defined login Role
-    if (loginRole != null) {
-      return (loginRole == request.user.login_role);
+    if (loginRoles.length > 0) {
+      return (loginRoles.includes(request.user.login_role));
     }
     
     return true;
