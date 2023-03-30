@@ -2,14 +2,17 @@ import { Injectable, CanActivate, ExecutionContext, Inject, UnauthorizedExceptio
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { getMetadataFromControllerAndHandler } from 'src/common/util';
+import { AccountRole } from 'src/entity/account.entity';
 import { AuthService } from '../auth.service';
 import { RolesGuard } from './roles.guard';
 
-// Check if account is authenticated, then
-// Check if defined roles match account's role, then
 // Check if refresh token is valid
+// - token is valid & not expired
+// - login time vs iat
+// - defined login role match account login role in decrypted payload
 @Injectable()
-export class RolesRefreshGuard extends RolesGuard implements CanActivate {
+export class RolesRefreshGuard implements CanActivate {
   constructor(
     protected reflector: Reflector, 
     
@@ -21,44 +24,50 @@ export class RolesRefreshGuard extends RolesGuard implements CanActivate {
     
     @Inject(AuthService)
     private authService: AuthService,
-    ) {
-    super(reflector);
-  }
+    ) {}
 
-  async checkRefreshTokenValid(request: any) {
-    const user = request.user;
+  async checkRefreshTokenValid(request: any, loginRoles: AccountRole[]) {
     const refreshToken = request.body.refresh_token;
 
     // verify jwt token
-    const payload = this.jwtService.verify(refreshToken, {
-        secret: this.configService.get('jwt.secret.refresh'),
-        ignoreExpiration: false,
-    });
+    let payload: any;
+    try {
+        payload = this.jwtService.verify(refreshToken, {
+          secret: this.configService.get('jwt.secret.refresh'),
+          ignoreExpiration: false,
+      });
+    }
+    catch {
+      // token is expired
+      throw new UnauthorizedException();
+    }
 
     // check payload
-    const result = this.checkRefreshPayload(payload, user) 
+    const result = this.checkRefreshPayload(payload, loginRoles) 
       && (await this.authService.checkLoginTime({id: payload.sub}, payload.login_role, payload.iat));
     if (result == false) {
       throw new UnauthorizedException();
     }
 
-    return true;
+    return payload;
   }
 
-  checkRefreshPayload(refreshPayload: any, user: any) {
-    return refreshPayload.sub == user.sub && refreshPayload.login_role == user.login_role;
+  checkRefreshPayload(refreshPayload: any, loginRoles: AccountRole[]) {
+    return loginRoles.includes(refreshPayload.login_role);
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // execute RolesGuard
-    const isAuthorizedRoles = await super.canActivate(context);
-
-    // not proceed if unauthorized
-    if (!isAuthorizedRoles) {
-        return false;
-    }
+    // get defined roles
+    const loginRoles = getMetadataFromControllerAndHandler<AccountRole>(context, this.reflector, 'loginRole');
 
     const request = context.switchToHttp().getRequest();
-    return this.checkRefreshTokenValid(request);
+    const payload = await this.checkRefreshTokenValid(request, loginRoles)
+    if (!payload) {
+      return false;
+    }
+
+    // save payload to request
+    request.userRefresh = payload;
+    return true;
   }
 }

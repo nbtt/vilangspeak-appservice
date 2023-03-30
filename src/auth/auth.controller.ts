@@ -41,7 +41,7 @@ export class AuthController {
     @UseGuards(RolesRefreshGuard)
     @Post('/refresh')
     async refresh(@Request() req) {
-        const account = this.authService.convertJwtToAccount(req.user);
+        const account = this.authService.convertJwtToAccount(req.userRefresh);
         const tokens = this.authService.login(account);
         return this.makeTokensResp(tokens);
     }

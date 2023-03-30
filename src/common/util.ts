@@ -1,3 +1,6 @@
+import { ExecutionContext } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+
 export function createTransformerEnum<T>(enumType: T) {
     return {
         from(value: number): T {
@@ -22,4 +25,17 @@ export function getSuccessResponse() {
         timestamp: Date.now(),
         status: "SUCCESS",
     }
+}
+
+export function getMetadataFromControllerAndHandler<T>(context: ExecutionContext, reflector: Reflector, name: string) {
+    const metadataController = reflector.get<T>(name, context.getClass()) || [];
+    const metadataHandler = reflector.get<T>(name, context.getHandler()) || [];
+
+    // concatenate the result
+    const result = [
+        ...(Array.isArray(metadataController) ? metadataController : [metadataController]),
+        ...(Array.isArray(metadataHandler) ? metadataHandler : [metadataHandler])
+    ];
+
+    return result;
 }
