@@ -7,6 +7,7 @@ export enum CardItemType {
     PARAGRAPH = 'p',
     IMAGE = 'i',
     VIDEO = 'v',
+    AUDIO = 'a',
 }
 
 @Entity()
