@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Category } from "./category.entity";
+import { Question } from "./question.entity";
 
 @Entity()
 export class Testx {
@@ -14,4 +15,7 @@ export class Testx {
 
     @ManyToOne(type => Category)
     category: Category;
+
+    @OneToMany(type => Question, question => question.test)
+    questions: Question[];
 }

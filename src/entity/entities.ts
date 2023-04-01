@@ -7,7 +7,9 @@ import { Card } from "./card.entity";
 import { Category } from "./category.entity";
 import { LessonLog } from "./lesson-log.entity";
 import { Lesson } from "./lesson.entity";
+import { QuestionItem } from "./question-item.entity";
+import { Question } from "./question.entity";
 import { TestLog } from "./test-log.entity";
 import { Testx } from "./testx.entity";
 
-export const entities = [Account, AccountLogin, Category, Lesson, LessonLog, Card, CardItem, Testx, TestLog, Achievement, AchievementLog];
+export const entities = [Account, AccountLogin, Category, Lesson, LessonLog, Card, CardItem, Testx, TestLog, Question, QuestionItem, Achievement, AchievementLog];
