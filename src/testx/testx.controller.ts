@@ -59,6 +59,46 @@ export class TestxController {
         }
     }
 
+    @UseGuards(RolesAccountGuard)
+    @Get('/:id')
+    async getOne (
+        @Param() param: QueryByIdDTO,
+    ) {
+        const test = await this.testxService.getOne(param.id);
+
+        if (test == null) {
+            throw new HttpException("Test not found", HttpStatus.NOT_FOUND);
+        }
+
+        const questionsResponse = test.questions.map((question) => {
+            return {
+                id: question.id,
+                question_type: question.question_type,
+                type: question.type,
+                content: question.content,
+                items: question.items,
+            }
+        });
+
+        const testResponse = {
+            id: test.id,
+            name: test.name,
+            visible: test.visible,
+            category: test.category,
+            questions: {
+                value: questionsResponse,
+                total: questionsResponse.length,
+            },
+        };
+
+        return {
+            timestamp: Date.now(),
+            data: {
+                test: testResponse,
+            }
+        }
+    }
+
     @UseGuards(RolesGuard)
     @Get('/all/progress')
     async getProgressAll(

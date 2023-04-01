@@ -92,6 +92,20 @@ export class TestxService {
         return [firstRecommendTest, secondRecommendTest];
     }
 
+    getOne(id: number) {
+        return this.testxRepository.findOne({
+            where: {
+                id: id,
+            },
+            relations: {
+                questions: {
+                    items: true,
+                },
+                category: true,
+            }
+        })
+    }
+
     getProgressAll(accountId: number, limit: number = 10, offset: number = 0): Promise<TestLog[]> {
         return this.testLogRespository.find({
             take: limit,
