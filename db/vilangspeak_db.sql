@@ -5,9 +5,9 @@
 # https://sequel-ace.com/
 # https://github.com/Sequel-Ace/Sequel-Ace
 #
-# Host: 127.0.0.1 (MySQL 8.0.31)
+# Host: 127.0.0.1 (MySQL 8.0.32)
 # Database: vilangspeak_db
-# Generation Time: 2023-03-02 19:13:04 +0000
+# Generation Time: 2023-04-01 15:43:25 +0000
 # ************************************************************
 
 
@@ -64,7 +64,7 @@ LOCK TABLES `account_login` WRITE;
 
 INSERT INTO `account_login` (`accountId`, `role`, `date`)
 VALUES
-	(1,1,'2023-03-03 01:58:17'),
+	(1,1,'2023-04-01 22:40:28'),
 	(2,1,'2023-02-20 10:00:42');
 
 /*!40000 ALTER TABLE `account_login` ENABLE KEYS */;
@@ -324,11 +324,78 @@ LOCK TABLES `lesson_log` WRITE;
 
 INSERT INTO `lesson_log` (`id`, `accountId`, `lessonId`, `date`, `progress`)
 VALUES
-	(1,1,1,'2023-01-07 10:57:02',50),
+	(1,1,1,'2023-02-26 17:04:03',50),
 	(2,1,2,'2023-01-07 10:34:06',100),
 	(3,1,3,'2023-01-02 20:56:32',50);
 
 /*!40000 ALTER TABLE `lesson_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table question
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `question`;
+
+CREATE TABLE `question` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `question_type` tinyint NOT NULL,
+  `type` tinyint NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `testId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_2c8f911efa2fb5b0fe1abe92020` (`testId`),
+  CONSTRAINT `FK_2c8f911efa2fb5b0fe1abe92020` FOREIGN KEY (`testId`) REFERENCES `testx` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `question` WRITE;
+/*!40000 ALTER TABLE `question` DISABLE KEYS */;
+
+INSERT INTO `question` (`id`, `question_type`, `type`, `content`, `testId`)
+VALUES
+	(1,1,1,'tôi',1),
+	(2,0,1,'Bạn là ai',1),
+	(3,0,4,'/public/audio/ten.wav',1);
+
+/*!40000 ALTER TABLE `question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table question_item
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `question_item`;
+
+CREATE TABLE `question_item` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type` tinyint NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `answer` int NOT NULL,
+  `questionId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_79eaef5e4be2fadb09374b62762` (`questionId`),
+  CONSTRAINT `FK_79eaef5e4be2fadb09374b62762` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `question_item` WRITE;
+/*!40000 ALTER TABLE `question_item` DISABLE KEYS */;
+
+INSERT INTO `question_item` (`id`, `type`, `content`, `answer`, `questionId`)
+VALUES
+	(1,1,'I',1,1),
+	(2,1,'am',0,1),
+	(3,1,'me',1,1),
+	(4,1,'who',0,1),
+	(5,1,'This is me',0,2),
+	(6,1,'Who are you',1,2),
+	(7,1,'Hello everyone',0,2),
+	(8,1,'What is your name',0,2),
+	(9,1,'tên',1,3),
+	(10,1,'tôi',0,3),
+	(11,1,'đang',0,3),
+	(12,1,'là',0,3);
+
+/*!40000 ALTER TABLE `question_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -359,7 +426,7 @@ LOCK TABLES `test_log` WRITE;
 INSERT INTO `test_log` (`id`, `date`, `times`, `scoreHighest`, `scoreLowest`, `scoreSum`, `accountId`, `testId`)
 VALUES
 	(3,'2023-01-07 11:10:53',5,10,8,45,1,2),
-	(4,'2023-01-07 11:12:57',3,9,8,26,1,1);
+	(4,'2023-02-26 17:11:19',7,9,8,62,1,1);
 
 /*!40000 ALTER TABLE `test_log` ENABLE KEYS */;
 UNLOCK TABLES;
