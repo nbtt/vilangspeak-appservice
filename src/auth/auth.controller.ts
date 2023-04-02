@@ -17,7 +17,7 @@ export class AuthController {
     @Post('/login')
     async login(@Request() req) {
         const tokens = this.authService.login(req.user);
-        return this.makeTokensResp(tokens);
+        return this.makeTokensResp(tokens, req.user.id);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -43,12 +43,13 @@ export class AuthController {
     async refresh(@Request() req) {
         const account = this.authService.convertJwtToAccount(req.userRefresh);
         const tokens = this.authService.login(account);
-        return this.makeTokensResp(tokens);
+        return this.makeTokensResp(tokens, account.id);
     }
 
-    makeTokensResp(tokens: {accessToken: string, refreshToken: string}) {
+    makeTokensResp(tokens: {accessToken: string, refreshToken: string}, accountId: number) {
         return {
             timestamp: Date.now(),
+            id: accountId,
             access_token: tokens.accessToken,
             refresh_token: tokens.refreshToken
         }
