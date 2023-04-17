@@ -25,7 +25,7 @@ export class AccountService {
     async create(accountInfo: CreateAccountDTO) {
         let isError = false, isDuplicatedAccount = false;
         let errrorMessage = "";
-        const insertResult = await this.accountRepository.insert({
+        await this.accountRepository.insert({
             ...accountInfo,
             password: makeHashValue(accountInfo.password),
             role: 1,
