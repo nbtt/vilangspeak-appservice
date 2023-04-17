@@ -21,6 +21,6 @@ export class QuestionItem {
     @Column()
     answer: number;
 
-    @ManyToOne(type => Question)
+    @ManyToOne(type => Question, {createForeignKeyConstraints: false})
     question: Question;
 }

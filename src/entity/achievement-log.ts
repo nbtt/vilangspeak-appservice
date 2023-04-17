@@ -7,10 +7,10 @@ export class AchievementLog {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => Account)
+    @ManyToOne(type => Account, {createForeignKeyConstraints: false})
     account: Account;
 
-    @ManyToOne(type => Achievement)
+    @ManyToOne(type => Achievement, {createForeignKeyConstraints: false})
     achievement: Achievement;
 
     @Column({type: "timestamp"})

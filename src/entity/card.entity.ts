@@ -28,9 +28,9 @@ export class Card {
     @Column()
     translation: string;
 
-    @ManyToOne(type => Lesson)
+    @ManyToOne(type => Lesson, {createForeignKeyConstraints: false})
     lesson: Lesson;
 
-    @OneToMany(type => CardItem, cardItem => cardItem.card)
+    @OneToMany(type => CardItem, cardItem => cardItem.card, {createForeignKeyConstraints: false})
     items: CardItem[];
 }

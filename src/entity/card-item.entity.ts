@@ -27,6 +27,6 @@ export class CardItem {
     @Column()
     content: string;
 
-    @ManyToOne(type => Card)
+    @ManyToOne(type => Card, {createForeignKeyConstraints: false})
     card: Card;
 }

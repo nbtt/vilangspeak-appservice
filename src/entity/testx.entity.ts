@@ -13,9 +13,9 @@ export class Testx {
     @Column({ default: true })
     visible: boolean;
 
-    @ManyToOne(type => Category)
+    @ManyToOne(type => Category, {createForeignKeyConstraints: false})
     category: Category;
 
-    @OneToMany(type => Question, question => question.test)
+    @OneToMany(type => Question, question => question.test, {createForeignKeyConstraints: false})
     questions: Question[];
 }

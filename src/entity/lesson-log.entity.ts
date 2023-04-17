@@ -7,10 +7,10 @@ export class LessonLog {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => Account)
+    @ManyToOne(type => Account, {createForeignKeyConstraints: false})
     account: Account;
 
-    @ManyToOne(type => Lesson)
+    @ManyToOne(type => Lesson, {createForeignKeyConstraints: false})
     lesson: Lesson;
 
     @Column({type: "timestamp"})

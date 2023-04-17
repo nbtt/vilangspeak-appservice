@@ -7,10 +7,10 @@ export class TestLog {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => Account)
+    @ManyToOne(type => Account, {createForeignKeyConstraints: false})
     account: Account;
 
-    @ManyToOne(type => Testx)
+    @ManyToOne(type => Testx, {createForeignKeyConstraints: false})
     test: Testx;
 
     @Column({type: "timestamp"})

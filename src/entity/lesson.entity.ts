@@ -15,13 +15,13 @@ export class Lesson {
     @Column({ default: true })
     visible: boolean;
 
-    @ManyToOne(type => Category)
+    @ManyToOne(type => Category, {createForeignKeyConstraints: false})
     category: Category;
 
-    @OneToOne(type => Testx)
+    @OneToOne(type => Testx, {createForeignKeyConstraints: false})
     @JoinColumn()
     linkedTest: Testx;
 
-    @OneToMany(type => Card, card => card.lesson)
+    @OneToMany(type => Card, card => card.lesson, {createForeignKeyConstraints: false})
     cards: Card[];
 }

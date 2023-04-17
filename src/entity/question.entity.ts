@@ -30,9 +30,9 @@ export class Question {
     @Column()
     content: string;
 
-    @ManyToOne(type => Testx)
+    @ManyToOne(type => Testx, {createForeignKeyConstraints: false})
     test: Testx;
 
-    @OneToMany(type => QuestionItem, questionItem => questionItem.question)
+    @OneToMany(type => QuestionItem, questionItem => questionItem.question, {createForeignKeyConstraints: false})
     items: QuestionItem[];
 }
