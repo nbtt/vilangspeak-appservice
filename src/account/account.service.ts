@@ -39,8 +39,6 @@ export class AccountService {
             }
         })
 
-        console.log(JSON.stringify(insertResult));
-
         if (isDuplicatedAccount) {
             throw new HttpException("Username existed", HttpStatus.CONFLICT);
         }
