@@ -15,6 +15,6 @@ jwt:
 
 root_account:
   name: 'Tuan Admin'
-  username: 'admin-abcafde'
+  username: 'admin'
   password: '123456'
   birthday: '2001-01-01'
