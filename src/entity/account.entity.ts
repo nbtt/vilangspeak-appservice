@@ -16,7 +16,7 @@ export class Account {
     @Column({type: "date"})
     birthday: string;
 
-    @Column()
+    @Column({unique: true})
     username: string;
 
     @Column()
@@ -24,4 +24,7 @@ export class Account {
 
     @Column({type: "tinyint"})
     role: AccountRole;
+
+    @Column({type: "char", length: 8})
+    salt: string;
 }

@@ -1,15 +1,53 @@
-import { Controller, Get, HttpException, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
 import { LoginRole } from 'src/auth/roles/roles.login.decorator';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { QueryByIdDTO } from 'src/dto/query-by-id.dto';
 import { AccountRole } from 'src/entity/account.entity';
 import { AccountService } from './account.service';
+import { ChangePasswordDTO, CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
 
 @LoginRole(AccountRole.USER)
 @Controller('/app/account')
 export class AccountController {
     constructor(private accountService: AccountService) {}
+    
+    @Post('/register')
+    async create(
+        @Body() body: CreateAccountDTO,
+    ) {
+        const account = await this.accountService.create(body);
+        const {password, salt, ...result} = account;
+        
+        return {
+            timestamp: Date.now(),
+            data: {
+                account: result,
+            },
+        };
+    }
+
+    @UseGuards(RolesAccountGuard)
+    @Patch('/:id/update')
+    async updateInfo(
+        @Param() param: QueryByIdDTO,
+        @Body() body: UpdateAccountDTO,
+    ) {
+        return {
+            ok: true,
+        }
+    }
+
+    @UseGuards(RolesAccountGuard)
+    @Put('/:id/change-password')
+    async changePassword (
+        @Param() param: QueryByIdDTO,
+        @Body() body: ChangePasswordDTO,
+    ) {
+        return {
+            ok: true,
+        }        
+    }
 
     @UseGuards(RolesAccountGuard)
     @Get('/:id/info')
@@ -22,7 +60,7 @@ export class AccountController {
             throw new HttpException(`Not found account by id ${param.id}`, HttpStatus.NOT_FOUND);
         }
 
-        const {password, ...result} = account;
+        const {password, salt, ...result} = account;
         
         return {
             timestamp: Date.now(),

@@ -20,6 +20,11 @@ export function getDateFromNumericDate(numericDate: number): Date {
     return new Date(numericDate * 1000);
 }
 
+export function generateRandomString(length) {
+    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    return [...Array(length)].reduce(a=>a+chars[~~(Math.random()*chars.length)],'');
+}
+
 export function getSuccessResponse() {
     return {
         timestamp: Date.now(),
