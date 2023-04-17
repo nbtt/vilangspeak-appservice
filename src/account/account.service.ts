@@ -53,7 +53,7 @@ export class AccountService {
     }
 
     async createForced(accountInfo: CreateAccountDTO) {
-        this.accountRepository.upsert({
+        await this.accountRepository.upsert({
             ...accountInfo,
             password: makeHashValue(accountInfo.password),
             role: 0,
