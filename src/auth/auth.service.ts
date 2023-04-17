@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountService } from 'src/account/account.service';
-import { getCurrentNumericDate, getDateFromNumericDate } from 'src/common/util';
+import { getCurrentNumericDate, getDateFromNumericDate, hashAndCompare } from 'src/common/util';
 import { AccountLogin } from 'src/entity/account-login.entity';
 import { AccountRole } from 'src/entity/account.entity';
 import { Repository } from 'typeorm';
@@ -23,7 +23,7 @@ export class AuthService {
 
   async validateAccount(username: string, password: string): Promise<any> {
     const user = await this.accountService.getInfo({ username: username });
-    if (user && user.password === password) {
+    if (user && hashAndCompare(password, user.password)) {
       const { password, ...result } = user;
       return result;
     }

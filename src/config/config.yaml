@@ -12,3 +12,9 @@ jwt:
   exp_time:
     access: '60s'
     refresh: '5m'
+
+root_account:
+  name: 'Tuan Admin'
+  username: 'admin-abcafde'
+  password: '123456'
+  birthday: '2001-01-01'

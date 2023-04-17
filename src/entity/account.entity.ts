@@ -24,7 +24,4 @@ export class Account {
 
     @Column({type: "tinyint"})
     role: AccountRole;
-
-    @Column({type: "char", length: 8})
-    salt: string;
 }

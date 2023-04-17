@@ -1,23 +1,25 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
 import { LoginRole } from 'src/auth/roles/roles.login.decorator';
+import { ChangePasswordDTO, CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { QueryByIdDTO } from 'src/dto/query-by-id.dto';
 import { AccountRole } from 'src/entity/account.entity';
 import { AccountService } from './account.service';
-import { ChangePasswordDTO, CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
 
 @LoginRole(AccountRole.USER)
 @Controller('/app/account')
 export class AccountController {
-    constructor(private accountService: AccountService) {}
+    constructor(
+        private accountService: AccountService,
+    ) {}
     
     @Post('/register')
     async create(
         @Body() body: CreateAccountDTO,
     ) {
         const account = await this.accountService.create(body);
-        const {password, salt, ...result} = account;
+        const {password, ...result} = account;
         
         return {
             timestamp: Date.now(),
@@ -60,7 +62,7 @@ export class AccountController {
             throw new HttpException(`Not found account by id ${param.id}`, HttpStatus.NOT_FOUND);
         }
 
-        const {password, salt, ...result} = account;
+        const {password, ...result} = account;
         
         return {
             timestamp: Date.now(),

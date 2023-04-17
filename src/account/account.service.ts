@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { generateRandomString } from 'src/common/util';
+import { makeHashValue } from 'src/common/util';
 import { CreateAccountDTO } from 'src/dto/account.dto';
 import { Account } from 'src/entity/account.entity';
 import { AchievementLog } from 'src/entity/achievement-log';
@@ -27,8 +27,8 @@ export class AccountService {
         let errrorMessage = "";
         const insertResult = await this.accountRepository.insert({
             ...accountInfo,
+            password: makeHashValue(accountInfo.password),
             role: 1,
-            salt: generateRandomString(8),
         }).catch((e) => {
             isError = true;
             errrorMessage = e.message;
@@ -50,6 +50,18 @@ export class AccountService {
         }
 
         return this.getInfo({username: accountInfo.username})
+    }
+
+    async createForced(accountInfo: CreateAccountDTO) {
+        this.accountRepository.upsert({
+            ...accountInfo,
+            password: makeHashValue(accountInfo.password),
+            role: 0,
+        }, {
+            conflictPaths: {
+                username: true,
+            }
+        })
     }
 
     getAchievements(id: number, limit: number, offset: number): Promise<AchievementLog[]> {
