@@ -15,6 +15,11 @@ export class RolesGuard extends JwtAuthGuard implements CanActivate {
   matchRoles(request: any, roles: AccountRole[]) {
     const user = request.user;
 
+    
+    if (user.role == AccountRole.ADMIN) { // skip if admin
+      return true;
+    }
+
     // match define role
     return roles.includes(user.role);
   }
@@ -29,10 +34,10 @@ export class RolesGuard extends JwtAuthGuard implements CanActivate {
     }
     
     // check if requested role matches defined roles
-    const roles = this.reflector.get<AccountRole[]>('roles', context.getHandler());
+    const roles = getMetadataFromControllerAndHandler<AccountRole[]>(context, this.reflector, 'roles');
     const request = context.switchToHttp().getRequest();
     // check if exists defined roles
-    if (roles) {
+    if (roles.length > 0) {
       if (!this.matchRoles(request, roles)) {
         return false;
       }
