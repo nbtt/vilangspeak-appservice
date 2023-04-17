@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { makeHashValue } from 'src/common/util';
-import { CreateAccountDTO } from 'src/dto/account.dto';
+import { CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
 import { Account } from 'src/entity/account.entity';
 import { AchievementLog } from 'src/entity/achievement-log';
 import { QueryFailedError, Repository } from 'typeorm';
@@ -60,6 +60,15 @@ export class AccountService {
                 username: true,
             }
         })
+    }
+
+    async updateInfo(filter: {
+        id?: number, 
+        username?: string
+    }, updateInfo: UpdateAccountDTO
+    ) {
+        await this.accountRepository.update(filter, updateInfo);
+        return this.getInfo(filter);
     }
 
     getAchievements(id: number, limit: number, offset: number): Promise<AchievementLog[]> {

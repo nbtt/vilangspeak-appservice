@@ -35,9 +35,15 @@ export class AccountController {
         @Param() param: QueryByIdDTO,
         @Body() body: UpdateAccountDTO,
     ) {
+        const account = await this.accountService.updateInfo({id: param.id}, body);
+        const {password, ...result} = account;
+        
         return {
-            ok: true,
-        }
+            timestamp: Date.now(),
+            data: {
+                account: result,
+            },
+        };
     }
 
     @UseGuards(RolesAccountGuard)
