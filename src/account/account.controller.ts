@@ -4,7 +4,7 @@ import { LoginRole } from 'src/auth/roles/roles.login.decorator';
 import { ChangePasswordDTO, CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
 import { GetAllDTO } from 'src/dto/get-all.dto';
 import { QueryByIdDTO } from 'src/dto/query-by-id.dto';
-import { AccountRole } from 'src/entity/account.entity';
+import { Account, AccountRole } from 'src/entity/account.entity';
 import { AccountService } from './account.service';
 
 @LoginRole(AccountRole.USER)
@@ -19,14 +19,7 @@ export class AccountController {
         @Body() body: CreateAccountDTO,
     ) {
         const account = await this.accountService.create(body);
-        const {password, ...result} = account;
-        
-        return {
-            timestamp: Date.now(),
-            data: {
-                account: result,
-            },
-        };
+        return this.parseAccountToResponse(account);
     }
 
     @UseGuards(RolesAccountGuard)
@@ -36,14 +29,7 @@ export class AccountController {
         @Body() body: UpdateAccountDTO,
     ) {
         const account = await this.accountService.updateInfo({id: param.id}, body);
-        const {password, ...result} = account;
-        
-        return {
-            timestamp: Date.now(),
-            data: {
-                account: result,
-            },
-        };
+        return this.parseAccountToResponse(account);
     }
 
     @UseGuards(RolesAccountGuard)
@@ -68,14 +54,7 @@ export class AccountController {
             throw new HttpException(`Not found account by id ${param.id}`, HttpStatus.NOT_FOUND);
         }
 
-        const {password, ...result} = account;
-        
-        return {
-            timestamp: Date.now(),
-            data: {
-                account: result,
-            },
-        };
+        return this.parseAccountToResponse(account);
     } 
 
     @UseGuards(RolesAccountGuard)
@@ -105,6 +84,17 @@ export class AccountController {
                 achievements: achievementsResponse,
                 total: achievementsResponse.length,
             }
+        };
+    }
+
+    parseAccountToResponse(account: Account) {
+        const {password, ...result} = account;
+        
+        return {
+            timestamp: Date.now(),
+            data: {
+                account: result,
+            },
         };
     }
 }
