@@ -26,5 +26,5 @@ export class AccountModule implements OnModuleInit {
         birthday: this.configService.get("root_account.birthday"),
     }
     await this.accountService.createForced(adminAccountInfo);
-}
+  }
 }
