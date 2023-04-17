@@ -1,7 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { makeHashValue } from 'src/common/util';
-import { CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
+import { hashAndCompare, makeHashValue } from 'src/common/util';
+import { ChangePasswordDTO, CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
 import { Account } from 'src/entity/account.entity';
 import { AchievementLog } from 'src/entity/achievement-log';
 import { QueryFailedError, Repository } from 'typeorm';
@@ -68,6 +68,22 @@ export class AccountService {
     }, updateInfo: UpdateAccountDTO
     ) {
         await this.accountRepository.update(filter, updateInfo);
+        return this.getInfo(filter);
+    }
+
+    async changePassword(filter: {
+        id?: number, 
+        username?: string
+    }, changePasswordInfo: ChangePasswordDTO
+    ) {
+        const account = await this.getInfo(filter);
+        if (!hashAndCompare(changePasswordInfo.password, account.password)) {
+            throw new UnauthorizedException("Wrong password");
+        }
+
+        await this.accountRepository.update(filter, {
+            password: makeHashValue(changePasswordInfo.new_password),
+        })
         return this.getInfo(filter);
     }
 

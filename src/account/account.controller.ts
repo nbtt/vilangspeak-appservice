@@ -38,9 +38,8 @@ export class AccountController {
         @Param() param: QueryByIdDTO,
         @Body() body: ChangePasswordDTO,
     ) {
-        return {
-            ok: true,
-        }        
+        const account = await this.accountService.changePassword({id: param.id}, body);
+        return this.parseAccountToResponse(account);
     }
 
     @UseGuards(RolesAccountGuard)
