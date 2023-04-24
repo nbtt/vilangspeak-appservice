@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.32)
 # Database: vilangspeak_db
-# Generation Time: 2023-04-01 15:43:25 +0000
+# Generation Time: 2023-04-24 16:32:09 +0000
 # ************************************************************
 
 
@@ -32,7 +32,8 @@ CREATE TABLE `account` (
   `username` varchar(255) NOT NULL,
   `role` tinyint NOT NULL,
   `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `IDX_41dfcb70af895ddf9a53094515` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `account` WRITE;
@@ -40,8 +41,9 @@ LOCK TABLES `account` WRITE;
 
 INSERT INTO `account` (`id`, `name`, `birthday`, `username`, `role`, `password`)
 VALUES
-	(1,'Tuan','2001-02-28','nbtt',0,'123456'),
-	(2,'Toai Tran','2001-12-30','toaitran2001',1,'124356');
+	(1,'Tuan Trinh','2001-02-28','nbtt',0,'$2b$10$ncQvABUT5To64wgUQ6i5ZuSSXtzjQIBoyJjzSyLT7xqXoELueR0a.'),
+	(2,'Toai Tran HCt','2001-12-30','toaitran2001',1,'$2b$10$PZgptBIGO47nFJQt1dBBheuFtrLta42gmtG0qt/c9DGq7/d./quna'),
+	(30,'Tuan Admin','2001-01-01','admin-abcafde',0,'$2b$10$Dj0NaWEjRk1Zm/dTVsPLXed5lEwgoYEqaYDDmWSabUwArYEV8Qhfa');
 
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -64,8 +66,10 @@ LOCK TABLES `account_login` WRITE;
 
 INSERT INTO `account_login` (`accountId`, `role`, `date`)
 VALUES
-	(1,1,'2023-04-01 22:40:28'),
-	(2,1,'2023-02-20 10:00:42');
+	(1,1,'2023-04-17 18:38:23'),
+	(2,1,'2023-04-17 18:46:48'),
+	(30,1,'2023-04-17 17:44:18'),
+	(36,1,'2023-04-17 17:35:27');
 
 /*!40000 ALTER TABLE `account_login` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -113,11 +117,7 @@ CREATE TABLE `achievement_log` (
   `date` timestamp NOT NULL,
   `accountId` int DEFAULT NULL,
   `achievementId` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_394ec34aa9e355ef3ed68332225` (`accountId`),
-  KEY `FK_ce08fe56d0bc64dd2f8a4c28561` (`achievementId`),
-  CONSTRAINT `FK_394ec34aa9e355ef3ed68332225` FOREIGN KEY (`accountId`) REFERENCES `account` (`id`),
-  CONSTRAINT `FK_ce08fe56d0bc64dd2f8a4c28561` FOREIGN KEY (`achievementId`) REFERENCES `achievement` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `achievement_log` WRITE;
@@ -154,9 +154,7 @@ CREATE TABLE `card` (
   `content` varchar(255) NOT NULL,
   `translation` varchar(255) NOT NULL,
   `lessonId` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_cfa0c24059e7685221fdfa6829a` (`lessonId`),
-  CONSTRAINT `FK_cfa0c24059e7685221fdfa6829a` FOREIGN KEY (`lessonId`) REFERENCES `lesson` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `card` WRITE;
@@ -200,9 +198,7 @@ CREATE TABLE `card_item` (
   `order` tinyint NOT NULL,
   `content` varchar(255) NOT NULL,
   `cardId` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_9aad4342b4d6d1cbe0604bbd284` (`cardId`),
-  CONSTRAINT `FK_9aad4342b4d6d1cbe0604bbd284` FOREIGN KEY (`cardId`) REFERENCES `card` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `card_item` WRITE;
@@ -277,11 +273,7 @@ CREATE TABLE `lesson` (
   `visible` tinyint NOT NULL DEFAULT '1',
   `categoryId` int DEFAULT NULL,
   `linkedTestId` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `REL_676b734c9ec39a5099a506a893` (`linkedTestId`),
-  KEY `FK_2c0dc097e2efa8f724904826eef` (`categoryId`),
-  CONSTRAINT `FK_2c0dc097e2efa8f724904826eef` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`),
-  CONSTRAINT `FK_676b734c9ec39a5099a506a893d` FOREIGN KEY (`linkedTestId`) REFERENCES `testx` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `lesson` WRITE;
@@ -312,11 +304,7 @@ CREATE TABLE `lesson_log` (
   `lessonId` int DEFAULT NULL,
   `date` timestamp NOT NULL,
   `progress` tinyint NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_aac90ad3b9d66483bdcb9db9d87` (`accountId`),
-  KEY `FK_2a00caddfdf1cf3f2236f6c82f5` (`lessonId`),
-  CONSTRAINT `FK_2a00caddfdf1cf3f2236f6c82f5` FOREIGN KEY (`lessonId`) REFERENCES `lesson` (`id`),
-  CONSTRAINT `FK_aac90ad3b9d66483bdcb9db9d87` FOREIGN KEY (`accountId`) REFERENCES `account` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `lesson_log` WRITE;
@@ -343,9 +331,7 @@ CREATE TABLE `question` (
   `type` tinyint NOT NULL,
   `content` varchar(255) NOT NULL,
   `testId` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_2c8f911efa2fb5b0fe1abe92020` (`testId`),
-  CONSTRAINT `FK_2c8f911efa2fb5b0fe1abe92020` FOREIGN KEY (`testId`) REFERENCES `testx` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `question` WRITE;
@@ -372,9 +358,7 @@ CREATE TABLE `question_item` (
   `content` varchar(255) NOT NULL,
   `answer` int NOT NULL,
   `questionId` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_79eaef5e4be2fadb09374b62762` (`questionId`),
-  CONSTRAINT `FK_79eaef5e4be2fadb09374b62762` FOREIGN KEY (`questionId`) REFERENCES `question` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `question_item` WRITE;
@@ -413,11 +397,7 @@ CREATE TABLE `test_log` (
   `scoreSum` int NOT NULL,
   `accountId` int DEFAULT NULL,
   `testId` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_0351b75994b61c0333b22dbac03` (`accountId`),
-  KEY `FK_89cb32eeeeb4359f3cb3e41692a` (`testId`),
-  CONSTRAINT `FK_0351b75994b61c0333b22dbac03` FOREIGN KEY (`accountId`) REFERENCES `account` (`id`),
-  CONSTRAINT `FK_89cb32eeeeb4359f3cb3e41692a` FOREIGN KEY (`testId`) REFERENCES `testx` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `test_log` WRITE;
@@ -442,9 +422,7 @@ CREATE TABLE `testx` (
   `name` varchar(255) NOT NULL,
   `visible` tinyint NOT NULL DEFAULT '1',
   `categoryId` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_9be8d7edfbce04d75e3a69b7421` (`categoryId`),
-  CONSTRAINT `FK_9be8d7edfbce04d75e3a69b7421` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `testx` WRITE;
