@@ -13,7 +13,7 @@ export class RolesAccountGuard extends RolesGuard implements CanActivate {
     super(reflector);
   }
 
-  matchRolesAccount(request: any, requestIdPath) {
+  matchRolesAccount(request: any, requestIdPath: string) {
     const user = request.user;
     const requestId = parseInt(_.get(request, requestIdPath, NaN));
 
