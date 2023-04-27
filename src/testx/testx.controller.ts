@@ -10,6 +10,8 @@ import { QueryByAccountIdDTO, QueryByIdDTO } from 'src/dto/query-by-id.dto';
 import { AccountRole } from 'src/entity/account.entity';
 import { Category } from 'src/entity/category.entity';
 import { TestxService } from './testx.service';
+import { RolesAccountQueryGuard } from 'src/auth/roles/roles.account.query.guard';
+import { RolesAccountBodyGuard } from 'src/auth/roles/roles.account.body.guard';
 
 @LoginRole(AccountRole.USER)
 @Controller('/app/test')
@@ -35,7 +37,7 @@ export class TestxController {
         };
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(RolesAccountQueryGuard)
     @Get('/recommend')
     async getRecommend(
         @Query() query: QueryByAccountIdDTO,
@@ -59,7 +61,7 @@ export class TestxController {
         }
     }
 
-    @UseGuards(RolesAccountGuard)
+    @UseGuards(RolesGuard)
     @Get('/:id')
     async getOne (
         @Param() param: QueryByIdDTO,
@@ -130,7 +132,7 @@ export class TestxController {
         };
     }
 
-    @UseGuards(RolesAccountGuard)
+    @UseGuards(RolesAccountQueryGuard)
     @Get('/:id/progress')
     async getProgress(
         @Param() param: QueryByIdDTO,
@@ -180,7 +182,7 @@ export class TestxController {
         };
     }
 
-    @UseGuards(RolesAccountGuard)
+    @UseGuards(RolesAccountBodyGuard)
     @Post('/:id/progress')
     async setProgress(
         @Param() param: QueryByIdDTO,

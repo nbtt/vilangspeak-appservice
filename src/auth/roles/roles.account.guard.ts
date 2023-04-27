@@ -2,6 +2,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AccountRole } from 'src/entity/account.entity';
 import { RolesGuard } from './roles.guard';
+import * as _ from 'lodash';
 
 // Check if account is authenticated, then
 // Check if defined roles match account's role, then
@@ -12,9 +13,9 @@ export class RolesAccountGuard extends RolesGuard implements CanActivate {
     super(reflector);
   }
 
-  matchRolesAccount(request: any) {
+  matchRolesAccount(request: any, requestIdPath) {
     const user = request.user;
-    const requestId = parseInt(request.params['id']);
+    const requestId = parseInt(_.get(request, requestIdPath, NaN));
 
     // admin role will proceed without any other checks
     if (user.role == AccountRole.ADMIN) {
@@ -31,7 +32,7 @@ export class RolesAccountGuard extends RolesGuard implements CanActivate {
     return requestId == user.sub;
   }
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  async canActivate(context: ExecutionContext, requestIdPath = 'params.id'): Promise<boolean> {
     // execute RolesGuard
     const isAuthorizedRoles = await super.canActivate(context);
 
@@ -41,6 +42,6 @@ export class RolesAccountGuard extends RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    return this.matchRolesAccount(request);
+    return this.matchRolesAccount(request, requestIdPath);
   }
 }

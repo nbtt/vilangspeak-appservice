@@ -10,6 +10,8 @@ import { AccountRole } from 'src/entity/account.entity';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { RolesAccountGuard } from 'src/auth/roles/roles.account.guard';
 import { getSuccessResponse } from 'src/common/util';
+import { RolesAccountQueryGuard } from 'src/auth/roles/roles.account.query.guard';
+import { RolesAccountBodyGuard } from 'src/auth/roles/roles.account.body.guard';
 
 @LoginRole(AccountRole.USER)
 @Controller('/app/lesson')
@@ -35,7 +37,7 @@ export class LessonController {
         };
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(RolesAccountQueryGuard)
     @Get('/recommend')
     async getRecommend(
         @Query() query: QueryByAccountIdDTO,
@@ -59,7 +61,7 @@ export class LessonController {
         }
     }
 
-    @UseGuards(RolesAccountGuard)
+    @UseGuards(RolesGuard)
     @Get('/:id')
     async getOne (
         @Param() param: QueryByIdDTO,
@@ -131,7 +133,7 @@ export class LessonController {
         };
     }
 
-    @UseGuards(RolesAccountGuard)
+    @UseGuards(RolesAccountQueryGuard)
     @Get('/:id/progress')
     async getProgress(
         @Param() param: QueryByIdDTO,
@@ -171,7 +173,7 @@ export class LessonController {
         };
     }
 
-    @UseGuards(RolesAccountGuard)
+    @UseGuards(RolesAccountBodyGuard)
     @Post('/:id/progress')
     async setProgress(
         @Param() param: QueryByIdDTO,
