@@ -52,3 +52,7 @@ Only need `docker-compose.yml` file and `docker login` to account. Then execute 
 docker compose pull
 docker compose up -d
 ```
+
+### Visualization and Monitoring
+
+Access URL `<host>:3000` and import dashboard `dashboard/grafana.json` for visualization.
