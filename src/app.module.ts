@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -13,6 +13,8 @@ import { entities } from './entity/entities';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { PrometheusModule, makeSummaryProvider } from '@willsoto/nestjs-prometheus';
+import { DurationMiddleWare } from './middleware/duration.middleware';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { AuthModule } from './auth/auth.module';
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/public',
     }),
+    PrometheusModule.register(),
     LessonModule,
     CategoryModule,
     TestxModule,
@@ -45,6 +48,18 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    makeSummaryProvider({
+      name: 'app_request_duration_seconds',
+      help: 'Duration of HTTP requests in seconds',
+      labelNames: ['service', 'method', 'path', 'status'],
+      percentiles: [0.5, 0.9, 0.99, 0.999, 1],
+    })
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(DurationMiddleWare).forRoutes('*');
+  }
+}
