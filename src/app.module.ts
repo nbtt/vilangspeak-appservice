@@ -68,8 +68,8 @@ import { randomBytes } from 'crypto';
       name: 'app_request_duration_seconds',
       help: 'Duration of HTTP requests in seconds',
       labelNames: ['service', 'method', 'path', 'status'],
-      // buckets: [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10],
-      buckets: [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
+      buckets: [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10],
+      // buckets: [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
     })
   ],
 })
