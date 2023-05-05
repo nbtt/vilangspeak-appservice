@@ -13,11 +13,25 @@ import { entities } from './entity/entities';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
-import { PrometheusModule, makeSummaryProvider } from '@willsoto/nestjs-prometheus';
+import { PrometheusModule, makeHistogramProvider, makeSummaryProvider } from '@willsoto/nestjs-prometheus';
 import { DurationMiddleWare } from './middleware/duration.middleware';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
+import { randomBytes } from 'crypto';
 
 @Module({
   imports: [
+    WinstonModule.forRoot({
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+      ),
+      defaultMeta: { instance: randomBytes(4).toString('hex') },
+      transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: join(__dirname, '..', 'log', 'info.log'), level: 'info' }),
+      ],
+    }),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
@@ -50,11 +64,12 @@ import { DurationMiddleWare } from './middleware/duration.middleware';
   controllers: [AppController],
   providers: [
     AppService,
-    makeSummaryProvider({
+    makeHistogramProvider({
       name: 'app_request_duration_seconds',
       help: 'Duration of HTTP requests in seconds',
       labelNames: ['service', 'method', 'path', 'status'],
-      percentiles: [0.5, 0.9, 0.99, 0.999, 1],
+      // buckets: [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10],
+      buckets: [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
     })
   ],
 })

@@ -12,6 +12,7 @@ services:
       - "3000"
     volumes:
       - ~/vls-appservice/public:/usr/src/app/public
+      - ~/vls-appservice/log:/usr/src/app/log
     depends_on:
       db:
         condition: service_healthy
@@ -51,7 +52,6 @@ services:
       - "80:4000"
   prometheus:
     image: "prom/prometheus:latest"
-    container_name: "prometheus"
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     restart: "always"
@@ -61,7 +61,6 @@ services:
       - "~/vls-appservice/prometheus_data:/prometheus"
   grafana:
     image: grafana/grafana
-    container_name: grafana
     ports:
       - 3000:3000
     restart: unless-stopped
