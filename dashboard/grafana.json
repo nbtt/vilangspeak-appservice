@@ -721,13 +721,11 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:227",
           "format": "bytes",
           "logBase": 1,
           "show": true
         },
         {
-          "$$hashKey": "object:228",
           "format": "short",
           "logBase": 1,
           "show": true
@@ -764,8 +762,6 @@
         "min": true,
         "rightSide": false,
         "show": true,
-        "sort": "avg",
-        "sortDesc": false,
         "total": false,
         "values": true
       },
@@ -815,13 +811,11 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:332",
           "format": "bytes",
           "logBase": 1,
           "show": true
         },
         {
-          "$$hashKey": "object:333",
           "format": "short",
           "logBase": 1,
           "show": true
@@ -946,12 +940,10 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
+              "linearThreshold": 1,
               "type": "linear"
             },
             "showPoints": "auto",
@@ -993,7 +985,8 @@
           "calcs": [
             "mean",
             "min",
-            "max"
+            "max",
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -1011,8 +1004,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "avg(app_request_duration_seconds{quantile=\"0.99\"}) * 1000",
-          "hide": false,
+          "expr": "histogram_quantile(0.99, sum by(le) (rate(app_request_duration_seconds_bucket[$__rate_interval]))) * 1000",
           "legendFormat": "All",
           "range": true,
           "refId": "A"
@@ -1023,10 +1015,8 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "exemplar": false,
-          "expr": "avg by(instance) (app_request_duration_seconds{quantile=\"0.99\"}) * 1000",
+          "expr": "histogram_quantile(0.99, sum by(le, instance) (rate(app_request_duration_seconds_bucket[$__rate_interval]))) * 1000",
           "hide": false,
-          "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
           "refId": "B"
@@ -1060,12 +1050,10 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
+              "linearThreshold": 1,
               "type": "linear"
             },
             "showPoints": "auto",
@@ -1101,13 +1089,14 @@
         "x": 12,
         "y": 22
       },
-      "id": 17,
+      "id": 15,
       "options": {
         "legend": {
           "calcs": [
             "mean",
             "min",
-            "max"
+            "max",
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -1125,11 +1114,11 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "avg by(service) (app_request_duration_seconds{quantile=\"0.99\"}) * 1000",
+          "expr": "histogram_quantile(0.99, sum by(le, service) (rate(app_request_duration_seconds_bucket[$__rate_interval]))) * 1000",
           "hide": false,
-          "legendFormat": "{{service}} service",
+          "legendFormat": "{{instance}}",
           "range": true,
-          "refId": "C"
+          "refId": "B"
         }
       ],
       "title": "P99 Request Duration by service (ms)",
@@ -1198,13 +1187,14 @@
         "x": 0,
         "y": 30
       },
-      "id": 16,
+      "id": 17,
       "options": {
         "legend": {
           "calcs": [
             "mean",
             "min",
-            "max"
+            "max",
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -1235,7 +1225,7 @@
           "editorMode": "builder",
           "expr": "sum by(instance) (rate(app_request_duration_seconds_count[$__rate_interval]))",
           "hide": false,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "B"
         }
@@ -1312,7 +1302,8 @@
           "calcs": [
             "mean",
             "min",
-            "max"
+            "max",
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -1332,7 +1323,7 @@
           "editorMode": "builder",
           "expr": "sum by(service) (rate(app_request_duration_seconds_count[$__rate_interval]))",
           "hide": false,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "B"
         }
@@ -1403,12 +1394,14 @@
         "x": 0,
         "y": 38
       },
-      "id": 20,
+      "id": 22,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "diff"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -1423,7 +1416,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "sum by(status) (rate(app_request_duration_seconds_count[$__rate_interval]))",
+          "expr": "sum by(status) (app_request_duration_seconds_count)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1495,16 +1488,14 @@
         "x": 12,
         "y": 38
       },
-      "id": 21,
+      "id": 20,
       "options": {
         "legend": {
           "calcs": [
-            "mean",
-            "min",
-            "max"
+            "diff"
           ],
           "displayMode": "table",
-          "placement": "bottom",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -1519,20 +1510,8 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "builder",
-          "expr": "sum(rate(app_request_duration_seconds_count{status!~\"^2[0-9]{2}$\"}[$__rate_interval]))",
-          "hide": false,
-          "legendFormat": "All",
-          "range": true,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "builder",
-          "expr": "sum by(service) (rate(app_request_duration_seconds_count{status!~\"^2[0-9]{2}$\"}[$__rate_interval]))",
-          "legendFormat": "{{service}} service",
+          "expr": "sum by(status, service) (app_request_duration_seconds_count{status!~\"^2[0-9]{2}$\"})",
+          "legendFormat": "{{status}} - {{service}} service",
           "range": true,
           "refId": "A"
         }
@@ -1579,7 +1558,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1608,8 +1587,8 @@
     ]
   },
   "timezone": "",
-  "title": "NodeJS Application Dashboard",
+  "title": "AppService - ViLangSpeak Dashboard",
   "uid": "PTSqcpJWk",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
