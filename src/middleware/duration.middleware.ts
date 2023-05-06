@@ -15,7 +15,7 @@ export class DurationMiddleWare implements NestMiddleware {
     
     response.on("finish", () => {
       const status = response.statusCode;
-      const path = response.req.route.path;
+      const path = response.req.route ? response.req.route.path : '/other';
       const method = request.method;
       let pathSplit = path.split("/");
       let service = pathSplit[1];
@@ -29,7 +29,6 @@ export class DurationMiddleWare implements NestMiddleware {
           service = "other";
         }
       }
-      const endTime = Date.now();
       end({ service, method, path, status });
     });
 
