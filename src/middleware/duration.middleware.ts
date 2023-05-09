@@ -1,13 +1,17 @@
 import { Request, Response, NextFunction } from "express";
-import { Injectable, NestMiddleware, Logger } from "@nestjs/common";
+import { Injectable, NestMiddleware, Inject, LoggerService } from "@nestjs/common";
 import { InjectMetric } from "@willsoto/nestjs-prometheus";
 import { Summary } from "prom-client";
+import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston";
 
 @Injectable()
 export class DurationMiddleWare implements NestMiddleware {
   constructor(
     @InjectMetric("app_request_duration_seconds")
     private summary: Summary,
+
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
   ) {}
 
   use(request: Request, response: Response, next: NextFunction): void {
@@ -30,6 +34,12 @@ export class DurationMiddleWare implements NestMiddleware {
         }
       }
       end({ service, method, path, status });
+      
+      // log information when status is not 2xx and 401
+      if (status < 200 || status >= 300 && status != 401) {
+        const originalUrl = request.originalUrl;
+        this.logger.warn(`[${service}] ${method} ${originalUrl} response_status=${status} request=${JSON.stringify(request.body)}`);
+      }
     });
 
     next();
