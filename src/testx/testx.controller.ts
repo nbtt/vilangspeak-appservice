@@ -116,7 +116,7 @@ export class TestxController {
             return {
                 test: item.test,
                 progress: {
-                    score: item.getScoreAverage(),
+                    score: item.scoreHighest,
                     times: item.times,
                     last_date: item.date.valueOf(),
                 }
