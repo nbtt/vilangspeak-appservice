@@ -77,6 +77,7 @@ export class TestxController {
                 id: question.id,
                 question_type: question.question_type,
                 type: question.type,
+                description: question.description,
                 content: question.content,
                 items: question.items,
             }

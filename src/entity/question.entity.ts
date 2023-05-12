@@ -30,7 +30,7 @@ export class Question {
     @Column({
         default: "",
     })
-    descrtiption: string;
+    description: string;
 
     @Column()
     content: string;
