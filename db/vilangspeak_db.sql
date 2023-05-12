@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.32)
 # Database: vilangspeak_db
-# Generation Time: 2023-05-12 03:39:33 +0000
+# Generation Time: 2023-05-12 03:47:50 +0000
 # ************************************************************
 
 
@@ -66,7 +66,7 @@ LOCK TABLES `account_login` WRITE;
 INSERT INTO `account_login` (`accountId`, `role`, `date`)
 VALUES
 	(1,1,'2023-04-17 18:38:23'),
-	(2,1,'2023-05-12 09:57:45'),
+	(2,1,'2023-05-12 10:47:23'),
 	(30,1,'2023-04-17 17:44:18'),
 	(36,1,'2023-04-17 17:35:27');
 
@@ -444,14 +444,14 @@ CREATE TABLE `question` (
   `type` tinyint NOT NULL,
   `content` varchar(255) NOT NULL,
   `testId` int DEFAULT NULL,
-  `descrtiption` varchar(255) NOT NULL DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
 
-INSERT INTO `question` (`id`, `question_type`, `type`, `content`, `testId`, `descrtiption`)
+INSERT INTO `question` (`id`, `question_type`, `type`, `content`, `testId`, `description`)
 VALUES
 	(1,1,1,'tôi',1,''),
 	(2,0,1,'Bạn là ai',1,''),
