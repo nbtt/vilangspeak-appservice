@@ -107,6 +107,10 @@ export class AuthService {
       }
     });
 
+    if (selectedAccount == null) {
+      return false;
+    }
+
     return getDateFromNumericDate(timeToCheck).getTime() >= selectedAccount.date.getTime()
   }
 }
