@@ -27,6 +27,11 @@ export class Question {
     })
     type: CardItemType; // question header type
 
+    @Column({
+        default: "",
+    })
+    descrtiption: string;
+
     @Column()
     content: string;
 
