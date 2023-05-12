@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.32)
 # Database: vilangspeak_db
-# Generation Time: 2023-05-12 19:06:36 +0000
+# Generation Time: 2023-05-12 19:09:50 +0000
 # ************************************************************
 
 
@@ -513,13 +513,13 @@ LOCK TABLES `category` WRITE;
 INSERT INTO `category` (`id`, `name`, `image`)
 VALUES
 	(1,'Greeting','/public/image/category-greeting.png'),
-	(8,'Get to know',''),
-	(9,'Number',''),
-	(10,'Colors',''),
-	(11,'Work',''),
-	(12,'Leisure',''),
-	(13,'Emotion',''),
-	(14,'Shopping','');
+	(8,'Get to know','/public/image/category-greeting.png'),
+	(9,'Number','/public/image/category-greeting.png'),
+	(10,'Colors','/public/image/category-greeting.png'),
+	(11,'Work','/public/image/category-greeting.png'),
+	(12,'Leisure','/public/image/category-greeting.png'),
+	(13,'Emotion','/public/image/category-greeting.png'),
+	(14,'Shopping','/public/image/category-greeting.png');
 
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
