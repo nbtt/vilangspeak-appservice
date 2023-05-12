@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.32)
 # Database: vilangspeak_db
-# Generation Time: 2023-05-12 16:29:59 +0000
+# Generation Time: 2023-05-12 19:06:36 +0000
 # ************************************************************
 
 
@@ -44,7 +44,7 @@ VALUES
 	(1,'Tuan Trinh','2001-02-28','nbtt',0,'$2b$10$ncQvABUT5To64wgUQ6i5ZuSSXtzjQIBoyJjzSyLT7xqXoELueR0a.'),
 	(2,'Toai Tran HCt','2001-12-30','toaitran2001',1,'$2b$10$PZgptBIGO47nFJQt1dBBheuFtrLta42gmtG0qt/c9DGq7/d./quna'),
 	(30,'Tuan Admin','2001-01-01','admin-abcafde',0,'$2b$10$Dj0NaWEjRk1Zm/dTVsPLXed5lEwgoYEqaYDDmWSabUwArYEV8Qhfa'),
-	(31,'Tuan Admin','2001-01-01','admin',0,'$2b$10$YkxV9.r/JqHCZ11HP9PzReJkZFvxDVTMQVm3X1kZH0ALgLQwWTKrC');
+	(31,'Tuan Admin','2001-01-01','admin',0,'$2b$10$7RboCb93jmcMmYI9UfYeceoxY9/X0fvxeFcryzdHyybIm6PkAOePC');
 
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -68,7 +68,7 @@ LOCK TABLES `account_login` WRITE;
 INSERT INTO `account_login` (`accountId`, `role`, `date`)
 VALUES
 	(1,1,'2023-05-12 22:27:35'),
-	(2,1,'2023-05-12 22:18:34'),
+	(2,1,'2023-05-12 23:52:08'),
 	(30,1,'2023-04-17 17:44:18'),
 	(36,1,'2023-04-17 17:35:27');
 
@@ -545,15 +545,15 @@ LOCK TABLES `lesson` WRITE;
 INSERT INTO `lesson` (`id`, `name`, `visible`, `categoryId`, `linkedTestId`)
 VALUES
 	(1,'Get to know',0,1,1),
-	(8,'Greetings',1,1,1),
-	(9,'Counting',1,1,1),
-	(10,'Favorite colors',1,1,1),
-	(11,'Personal Pronounce',1,1,1),
-	(12,'Occupation',1,1,1),
-	(13,'How are you',1,1,1),
-	(14,'Age and hobby',1,1,1),
-	(15,'How do I feel?',1,1,1),
-	(16,'Eating and drinking',1,1,1);
+	(8,'Greetings',1,8,1),
+	(9,'Counting',1,9,1),
+	(10,'Favorite colors',1,10,1),
+	(11,'Personal Pronounce',1,8,1),
+	(12,'Occupation',1,11,1),
+	(13,'How are you',1,8,1),
+	(14,'Age and hobby',1,12,1),
+	(15,'How do I feel?',1,13,1),
+	(16,'Eating and drinking',1,14,1);
 
 /*!40000 ALTER TABLE `lesson` ENABLE KEYS */;
 UNLOCK TABLES;
