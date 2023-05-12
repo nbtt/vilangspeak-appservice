@@ -103,7 +103,7 @@ export class LessonController {
         }
     }
 
-    @UseGuards(RolesGuard)
+    @UseGuards(RolesAccountQueryGuard)
     @Get('/all/progress')
     async getProgressAll(
         @Query() query: GetAllByIdDTO,
