@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.32)
 # Database: vilangspeak_db
-# Generation Time: 2023-05-13 10:24:23 +0000
+# Generation Time: 2023-05-13 10:29:28 +0000
 # ************************************************************
 
 
@@ -1053,7 +1053,6 @@ LOCK TABLES `testx` WRITE;
 
 INSERT INTO `testx` (`id`, `name`, `visible`, `categoryId`)
 VALUES
-	(1,'Hello',0,1),
 	(8,'Greetings',1,8),
 	(9,'Counting',1,9),
 	(10,'Favorite colors',1,10),
