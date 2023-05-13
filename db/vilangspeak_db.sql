@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 8.0.32)
 # Database: vilangspeak_db
-# Generation Time: 2023-05-13 07:52:23 +0000
+# Generation Time: 2023-05-13 08:01:35 +0000
 # ************************************************************
 
 
@@ -547,15 +547,15 @@ LOCK TABLES `lesson` WRITE;
 INSERT INTO `lesson` (`id`, `name`, `visible`, `categoryId`, `linkedTestId`)
 VALUES
 	(1,'Get to know',0,1,1),
-	(8,'Greetings',1,8,1),
-	(9,'Counting',1,9,1),
-	(10,'Favorite colors',1,10,1),
-	(11,'Personal Pronounce',1,8,1),
-	(12,'Occupation',1,11,1),
-	(13,'How are you',1,8,1),
-	(14,'Age and hobby',1,12,1),
-	(15,'How do I feel?',1,13,1),
-	(16,'Eating and drinking',1,14,1);
+	(8,'Greetings',1,8,8),
+	(9,'Counting',1,9,9),
+	(10,'Favorite colors',1,10,10),
+	(11,'Personal Pronounce',1,8,11),
+	(12,'Occupation',1,11,12),
+	(13,'How are you',1,8,13),
+	(14,'Age and hobby',1,12,14),
+	(15,'How do I feel?',1,13,15),
+	(16,'Eating and drinking',1,14,16);
 
 /*!40000 ALTER TABLE `lesson` ENABLE KEYS */;
 UNLOCK TABLES;
