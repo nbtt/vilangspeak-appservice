@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Card } from "./card.entity";
 import { createTransformerEnum } from "../common/util";
 
@@ -27,6 +27,7 @@ export class CardItem {
     @Column()
     content: string;
 
+    @Index()
     @ManyToOne(type => Card, {createForeignKeyConstraints: false})
     card: Card;
 }

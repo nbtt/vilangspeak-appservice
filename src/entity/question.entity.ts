@@ -1,5 +1,5 @@
 import { createTransformerEnum } from "src/common/util";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { CardItemType } from "./card-item.entity";
 import { Testx } from "./testx.entity";
 import { QuestionItem } from "./question-item.entity";
@@ -35,6 +35,7 @@ export class Question {
     @Column()
     content: string;
 
+    @Index()
     @ManyToOne(type => Testx, {createForeignKeyConstraints: false})
     test: Testx;
 

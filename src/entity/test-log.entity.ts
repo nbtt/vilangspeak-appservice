@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Account } from "./account.entity";
 import { Testx } from "./testx.entity";
 
@@ -7,12 +7,14 @@ export class TestLog {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Index()
     @ManyToOne(type => Account, {createForeignKeyConstraints: false})
     account: Account;
 
     @ManyToOne(type => Testx, {createForeignKeyConstraints: false})
     test: Testx;
 
+    @Index()
     @Column({type: "timestamp"})
     date: Date;
 
