@@ -6,7 +6,11 @@ export class CreateAccountDTO {
     @IsString()
     name: string;
 
+    @Matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}.*$/, {
+        message: 'birthday must be in format starting with YYYY-MM-DD',
+    })
     @IsDateString({ strict: true })
+    @Transform(({value}) => value.slice(0, 10))
     birthday: string;
 
     @Matches(/^[a-zA-Z][a-zA-Z0-9_]{3,19}$/, {
