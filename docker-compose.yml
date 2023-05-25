@@ -11,7 +11,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - ~/vls-appservice/public:/usr/src/app/public
+      - ~/vls-appservice/public/public:/usr/src/app/public
       - ~/vls-appservice/log:/usr/src/app/log
     depends_on:
       db:
