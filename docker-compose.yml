@@ -16,12 +16,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  # redis:
-  #   image: redis
-  #   ports:
-  #     - 6379:6379
-  #   volumes:
-  #     - ~/vls-appservice/redis:/data
   db:
     image: mysql:8.0
     cap_add:
