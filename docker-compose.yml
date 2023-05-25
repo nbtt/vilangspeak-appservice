@@ -11,7 +11,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - ~/vls-appservice/public/public:/usr/src/app/public
+      - ~/vls-appservice/static/public:/usr/src/app/public
       - ~/vls-appservice/log:/usr/src/app/log
     depends_on:
       db:
@@ -40,7 +40,7 @@ services:
     image: nginx:1.23
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ~/vls-appservice/public:/usr/src/app/public
+      - ~/vls-appservice/static:/www/data
     depends_on:
       - api
     ports:
