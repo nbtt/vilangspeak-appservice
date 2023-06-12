@@ -9,14 +9,14 @@ import { SetTestProgressDTO } from 'src/dto/progress.dto';
 import { QueryByAccountIdDTO, QueryByIdDTO } from 'src/dto/query-by-id.dto';
 import { AccountRole } from 'src/entity/account.entity';
 import { Category } from 'src/entity/category.entity';
-import { TestxService } from './testx.service';
+import { TestService } from './test.service';
 import { RolesAccountQueryGuard } from 'src/auth/roles/roles.account.query.guard';
 import { RolesAccountBodyGuard } from 'src/auth/roles/roles.account.body.guard';
 
 @LoginRole(AccountRole.USER)
 @Controller('/app/test')
-export class TestxController {
-    constructor(private testxService: TestxService) {}
+export class TestController {
+    constructor(private testxService: TestService) {}
 
     @UseGuards(RolesGuard)
     @Get('/all')

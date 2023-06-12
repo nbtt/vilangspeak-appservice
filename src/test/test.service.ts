@@ -5,16 +5,16 @@ import { Testx } from 'src/entity/testx.entity';
 import { LessThan, MoreThan, QueryFailedError, Repository } from 'typeorm';
 
 @Injectable()
-export class TestxService {
+export class TestService {
     constructor(
         @InjectRepository(Testx)
-        private testxRepository: Repository<Testx>,
+        private testRepository: Repository<Testx>,
         @InjectRepository(TestLog)
         private testLogRespository: Repository<TestLog>,
     ) {}
 
     getAll(limit: number = 10, offset: number = 0): Promise<Testx[]> {
-        return this.testxRepository.find({
+        return this.testRepository.find({
             take: limit,
             skip: offset,
             loadRelationIds: {
@@ -43,7 +43,7 @@ export class TestxService {
 
         if (lastViewTestLog == null) {
             // not complete any test, return first 2 tests
-            return this.testxRepository.find({
+            return this.testRepository.find({
                 take: 2,
                 loadRelationIds: {
                     relations: ['category'],
@@ -58,7 +58,7 @@ export class TestxService {
         const firstRecommendTest = lastViewTestLog.test;
 
         // try to get next lesson or previous lesson (if next lesson not found)
-        const nextTest = await this.testxRepository.findOne({
+        const nextTest = await this.testRepository.findOne({
             where: {
                 id: MoreThan(lastViewTestLog.test.id),
             },
@@ -70,7 +70,7 @@ export class TestxService {
             },
         });
 
-        const previousTest = (nextTest == null) ? (await this.testxRepository.findOne({
+        const previousTest = (nextTest == null) ? (await this.testRepository.findOne({
                 where: {
                     id: LessThan(lastViewTestLog.test.id),
                 },
@@ -93,7 +93,7 @@ export class TestxService {
     }
 
     getOne(id: number) {
-        return this.testxRepository.findOne({
+        return this.testRepository.findOne({
             where: {
                 id: id,
             },
@@ -193,7 +193,7 @@ export class TestxService {
     }
 
     async isTestExisted(id: number): Promise<Boolean> {
-        const test = await this.testxRepository.findOne({
+        const test = await this.testRepository.findOne({
             where: {
                 id: id,
             },

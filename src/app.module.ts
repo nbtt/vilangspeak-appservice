@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import configuration from './config/configuration';
 import { LessonModule } from './lesson/lesson.module';
 import { CategoryModule } from './category/category.module';
-import { TestxModule } from './testx/testx.module';
+import { TestModule } from './test/test.module';
 import { AccountModule } from './account/account.module';
 import { entities } from './entity/entities';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -57,7 +57,7 @@ import { randomBytes } from 'crypto';
     PrometheusModule.register(),
     LessonModule,
     CategoryModule,
-    TestxModule,
+    TestModule,
     AccountModule,
     AuthModule,
   ],
