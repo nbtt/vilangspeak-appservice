@@ -201,24 +201,24 @@ describe('LessonController', () => {
 
   it('should return all lessons with limit and offset', async () => {
     const result = await controller.getAll({ limit: 2, offset: 1 });
-    const returnedLessons = lessons.slice(1, 3);
+    const expectedLessons = lessons.slice(1, 3);
     expect(result).toEqual({
       timestamp: expect.any(Number),
       data: {
-        lessons: returnedLessons.map(getGeneralLessonInfo),
-        total: returnedLessons.length,
+        lessons: expectedLessons.map(getGeneralLessonInfo),
+        total: expectedLessons.length,
       }
     });
   });
 
   it('should return recommended lessons', async () => {
     const result = await controller.getRecommend({ account_id: 1 });
-    const returnedLessons = lessons.slice(0, 2);
+    const expectedLessons = lessons.slice(0, 2);
     expect(result).toEqual({
       timestamp: expect.any(Number),
       data: {
-        lessons: returnedLessons.map(getGeneralLessonInfo),
-        total: returnedLessons.length,
+        lessons: expectedLessons.map(getGeneralLessonInfo),
+        total: expectedLessons.length,
       }
     });
   });
@@ -238,36 +238,39 @@ describe('LessonController', () => {
     await expect(result).rejects.toThrowError(new HttpException("Lesson not found", HttpStatus.NOT_FOUND));
   });
 
-  // it('should return all lessons progress with account_id, limit and offset', async () => {
-  //   const result = await controller.getProgressAll({ account_id: 1, limit: 1, offset: 1 });
-  //   expect(result).toEqual({
-  //     timestamp: expect.any(Number),
-  //     data: {
-  //       progresses: [{
-  //         lesson: 2,
-  //         progress: {
-  //           value: 1,
-  //           last_date: lessonsProgress[1].date.valueOf(),
-  //         }
-  //       }],
-  //       total: lessonsProgress.length,
-  //     },
-  //   });
-  // });
+  it('should return all lessons progress with account_id, limit and offset', async () => {
+    const result = await controller.getProgressAll({ account_id: 1, limit: 1, offset: 1 });
+    const expectedLessonProgress = lessonsProgress.slice(1, 2);
+    expect(result).toEqual({
+      timestamp: expect.any(Number),
+      data: {
+        progresses: expectedLessonProgress.map((lessonProgress) => {
+          return {
+            lesson: lessonProgress.lesson,
+            progress: {
+              value: lessonProgress.progress,
+              last_date: lessonProgress.date.valueOf(),
+            }
+          }
+        }),
+        total: expectedLessonProgress.length,
+      },
+    });
+  });
 
-  // it('should return a lesson progress with id and account_id', async () => {
-  //   const result = await controller.getProgress({ id: 1 }, { account_id: 1 });
-  //   expect(result).toEqual({
-  //     timestamp: expect.any(Number),
-  //     data: {
-  //       lesson: 1,
-  //       progress: {
-  //         value: 1,
-  //         last_date: lessonsProgress[0].date.valueOf(),
-  //       }
-  //     },
-  //   });
-  // });
+  it('should return a lesson progress with id and account_id', async () => {
+    const result = await controller.getProgress({ id: 1 }, { account_id: 1 });
+    expect(result).toEqual({
+      timestamp: expect.any(Number),
+      data: {
+        lesson: 1,
+        progress: {
+          value: lessonsProgress[0].progress,
+          last_date: lessonsProgress[0].date.valueOf(),
+        }
+      },
+    });
+  });
 
   // it('should return an error with lesson progress not found', async () => {
   //   const result = await controller.getProgress({ id: 3 }, { account_id: 1 });
