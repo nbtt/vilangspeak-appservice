@@ -3,6 +3,8 @@ import { LessonController } from './lesson.controller';
 import { getSuccessResponse } from 'src/common/util';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { LessonService } from './lesson.service';
+import { CardType } from 'src/entity/card.entity';
+import { CardItemType } from 'src/entity/card-item.entity';
 
 describe('LessonController', () => {
   let controller: LessonController;
@@ -11,16 +13,96 @@ describe('LessonController', () => {
     name: 'test',
     visible: false,
     category: 1,
+    linkedTest: 1,
+    cards: [{
+      id: 1,
+      type: CardType.WORD,
+      audioUrl: '/public/audio/test.wav',
+      content: 'test content',
+      translation: 'test translation',
+      lesson: 1,
+      items: [{
+        id: 1,
+        type: CardItemType.HEADER,
+        order: 0,
+        content: 'Examples',
+        card: 1,
+      }, {
+        id: 2,
+        type: CardItemType.PARAGRAPH,
+        order: 1,
+        content: 'test',
+        card: 1,
+      }],
+    }],
   }, {
     id: 2,
     name: 'test2',
     visible: true,
     category: 2,
+    linkedTest: 2,
+    cards: [{
+      id: 2,
+      type: CardType.WORD,
+      audioUrl: '/public/audio/test2.wav',
+      content: 'test2 content',
+      translation: 'test2 translation',
+      lesson: 2,
+      items: [{
+        id: 3,
+        type: CardItemType.HEADER,
+        order: 0,
+        content: 'Examples',
+        card: 2,
+      }, {
+        id: 4,
+        type: CardItemType.PARAGRAPH,
+        order: 1,
+        content: 'test2',
+        card: 2,
+      }],
+    }],
   }, {
     id: 3,
     name: 'test',
     visible: true,
     category: 1,
+    linkedTest: 3,
+    cards: [{
+      id: 3,
+      type: CardType.WORD,
+      audioUrl: '/public/audio/test3.wav',
+      content: 'test3 content',
+      translation: 'test3 translation',
+      lesson: 3,
+      items: [{
+        id: 5,
+        type: CardItemType.HEADER,
+        order: 0,
+        content: 'Examples',
+        card: 3,
+      }, {
+        id: 6,
+        type: CardItemType.PARAGRAPH,
+        order: 1,
+        content: 'test3',
+        card: 3,
+      }],
+    }, {
+      id: 4,
+      type: CardType.SENTENCE,
+      audioUrl: '/public/audioo/test3s.wav',
+      content: 'test3s content',
+      translation: 'test3s translation',
+      lesson: 3,
+      items: [{
+        id: 7,
+        type: CardItemType.PARAGRAPH,
+        order: 1,
+        content: 'test3s',
+        card: 4,
+      }],
+    }],
   }];
   const lessonsProgress = [{
     id: 1,
@@ -35,6 +117,33 @@ describe('LessonController', () => {
     date: new Date(),
     progress: 100,
   }];
+  const getGeneralLessonInfo = (lesson) => {
+    return {            
+      id: lesson.id,
+      name: lesson.name,
+      visible: lesson.visible,
+      category: lesson.category,
+    }
+  };
+  const getLessonInfo = (lesson) => {
+    return {
+      ...getGeneralLessonInfo(lesson),
+      test: lesson.linkedTest,
+      cards: {
+        value: lesson.cards.map((card) => {
+          return {
+            id: card.id,
+            type: card.type,
+            audio_url: card.audioUrl,
+            content: card.content,
+            translation: card.translation,
+            items: card.items,
+          }
+        }),
+        total: lesson.cards.length,
+      },
+    }
+  };
 
 
   beforeEach(async () => {
@@ -42,10 +151,10 @@ describe('LessonController', () => {
       controllers: [LessonController],
       providers: [{ provide: LessonService, useValue: {
         getAll: jest.fn().mockImplementation((limit, offset) => {
-          return lessons.slice(offset, offset + limit);
+          return lessons.slice(offset, offset + limit).map(getGeneralLessonInfo);
         }),
         getRecommend: jest.fn().mockImplementation((accountId) => {
-          return lessons.slice(0, 2);
+          return lessons.slice(0, 2).map(getGeneralLessonInfo);
         }),
         getOne: jest.fn().mockImplementation((id) => {
           return lessons.find((lesson) => lesson.id === id);
@@ -84,7 +193,7 @@ describe('LessonController', () => {
     expect(result).toEqual({
       timestamp: expect.any(Number),
       data: {
-        lessons: lessons,
+        lessons: lessons.map(getGeneralLessonInfo),
         total: lessons.length,
       }
     });
@@ -96,7 +205,7 @@ describe('LessonController', () => {
     expect(result).toEqual({
       timestamp: expect.any(Number),
       data: {
-        lessons: returnedLessons,
+        lessons: returnedLessons.map(getGeneralLessonInfo),
         total: returnedLessons.length,
       }
     });
@@ -108,19 +217,21 @@ describe('LessonController', () => {
     expect(result).toEqual({
       timestamp: expect.any(Number),
       data: {
-        lessons: returnedLessons,
+        lessons: returnedLessons.map(getGeneralLessonInfo),
         total: returnedLessons.length,
       }
     });
   });
 
-  // it('should return a lesson with id', async () => {
-  //   const result = await controller.getOne({ id: 1 });
-  //   expect(result).toEqual({
-  //     timestamp: expect.any(Number),
-  //     data: lessons[0],
-  //   });
-  // });
+  it('should return a lesson with id', async () => {
+    const result = await controller.getOne({ id: 3 });
+    expect(result).toEqual({
+      timestamp: expect.any(Number),
+      data: {
+        lesson: getLessonInfo(lessons[2]),
+      }
+    });
+  });
 
   it('should return an error with lesson not found', async () => {
     const result = controller.getOne({ id: 4 });
