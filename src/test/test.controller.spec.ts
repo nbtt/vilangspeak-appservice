@@ -4,156 +4,156 @@ import { QuestionType } from 'src/entity/question.entity';
 import { CardItemType } from 'src/entity/card-item.entity';
 import { TestService } from './test.service';
 
-describe('TestController', () => {
-  let controller: TestController;
-  const tests = [{
+const tests = [{
+  id: 1,
+  name: 'test',
+  visible: true,
+  category: 1,
+  questions: [{
     id: 1,
-    name: 'test',
-    visible: true,
-    category: 1,
-    questions: [{
+    question_type: QuestionType.SINGLE_CHOICE,
+    type: CardItemType.PARAGRAPH,
+    description: 'test description',
+    content: 'test content',
+    test: 1,
+    items: [{
       id: 1,
-      question_type: QuestionType.SINGLE_CHOICE,
       type: CardItemType.PARAGRAPH,
-      description: 'test description',
-      content: 'test content',
-      test: 1,
-      items: [{
-        id: 1,
-        type: CardItemType.PARAGRAPH,
-        order: 0,
-        content: 'test 1',
-        question: 1,
-      }, {
-        id: 2,
-        type: CardItemType.IMAGE,
-        order: 1,
-        content: 'test 2',
-        question: 1,
-      }, {
-        id: 3,
-        type: CardItemType.AUDIO,
-        order: 2,
-        content: 'test 3',
-        question: 1,
-      }, {
-        id: 4,
-        type: CardItemType.PARAGRAPH,
-        order: 3,
-        content: 'test 4',
-        question: 1,
-      }],
+      order: 0,
+      content: 'test 1',
+      question: 1,
     }, {
       id: 2,
-      question_type: QuestionType.MULTIPLE_CHOICE,
+      type: CardItemType.IMAGE,
+      order: 1,
+      content: 'test 2',
+      question: 1,
+    }, {
+      id: 3,
+      type: CardItemType.AUDIO,
+      order: 2,
+      content: 'test 3',
+      question: 1,
+    }, {
+      id: 4,
       type: CardItemType.PARAGRAPH,
-      description: 'test description 2',
-      content: 'test content 2',
-      test: 1,
-      items: [{
-        id: 5,
-        type: CardItemType.PARAGRAPH,
-        order: 0,
-        content: 'test 5',
-        question: 2,
-      }, {
-        id: 6,
-        type: CardItemType.PARAGRAPH,
-        order: 0,
-        content: 'test 6',
-        question: 2,
-      }, {
-        id: 7,
-        type: CardItemType.PARAGRAPH,
-        order: 0,
-        content: 'test 7',
-        question: 2,
-      }, {
-        id: 8,
-        type: CardItemType.PARAGRAPH,
-        order: 0,
-        content: 'test 8',
-        question: 2,
-      }],
+      order: 3,
+      content: 'test 4',
+      question: 1,
     }],
   }, {
     id: 2,
-    name: 'test2',
-    visible: true,
-    category: 2,
-    questions: [],
-  }, {
-    id: 3,
-    name: 'test3',
-    visible: true,
-    category: 3,
-    questions: [],
-  }];
-  const testsProgress = [{
-    id: 1,
+    question_type: QuestionType.MULTIPLE_CHOICE,
+    type: CardItemType.PARAGRAPH,
+    description: 'test description 2',
+    content: 'test content 2',
     test: 1,
-    account: 1,
-    date: new Date(2023, 1, 1, 1, 1, 1),
-    times: 2,
-    scoreHighest: 100,
-    scoreLowest: 50,
-    scoreSum: 150,
-    getScoreAverage: () => 75,
-  }, {
-    id: 2,
-    test: 2,
-    account: 1,
-    date: new Date(),
-    times: 1,
-    scoreHighest: 70,
-    scoreLowest: 70,
-    scoreSum: 70,
-    getScoreAverage: () => 70,
-  }];
-  const getGeneralTestInfo = (test) => {
-    return {
-      id: test.id,
-      name: test.name,
-      visible: test.visible,
-      category: test.category,
-    };
+    items: [{
+      id: 5,
+      type: CardItemType.PARAGRAPH,
+      order: 0,
+      content: 'test 5',
+      question: 2,
+    }, {
+      id: 6,
+      type: CardItemType.PARAGRAPH,
+      order: 0,
+      content: 'test 6',
+      question: 2,
+    }, {
+      id: 7,
+      type: CardItemType.PARAGRAPH,
+      order: 0,
+      content: 'test 7',
+      question: 2,
+    }, {
+      id: 8,
+      type: CardItemType.PARAGRAPH,
+      order: 0,
+      content: 'test 8',
+      question: 2,
+    }],
+  }],
+}, {
+  id: 2,
+  name: 'test2',
+  visible: true,
+  category: 2,
+  questions: [],
+}, {
+  id: 3,
+  name: 'test3',
+  visible: true,
+  category: 3,
+  questions: [],
+}];
+const testsProgress = [{
+  id: 1,
+  test: 1,
+  account: 1,
+  date: new Date(2023, 1, 1, 1, 1, 1),
+  times: 2,
+  scoreHighest: 100,
+  scoreLowest: 50,
+  scoreSum: 150,
+  getScoreAverage: () => 75,
+}, {
+  id: 2,
+  test: 2,
+  account: 1,
+  date: new Date(),
+  times: 1,
+  scoreHighest: 70,
+  scoreLowest: 70,
+  scoreSum: 70,
+  getScoreAverage: () => 70,
+}];
+const getGeneralTestInfo = (test) => {
+  return {
+    id: test.id,
+    name: test.name,
+    visible: test.visible,
+    category: test.category,
   };
-  const getTestInfo = (test) => {
-    return {
-      id: test.id,
-      name: test.name,
-      visible: test.visible,
-      category: test.category,
-      questions: {
-        value: test.questions.map(question => {
-          return {
-            id: question.id,
-            question_type: question.question_type,
-            type: question.type,
-            description: question.description,
-            content: question.content,
-            items: question.items,
-          };
-        }),
-        total: test.questions.length,
+};
+const getTestInfo = (test) => {
+  return {
+    id: test.id,
+    name: test.name,
+    visible: test.visible,
+    category: test.category,
+    questions: {
+      value: test.questions.map(question => {
+        return {
+          id: question.id,
+          question_type: question.question_type,
+          type: question.type,
+          description: question.description,
+          content: question.content,
+          items: question.items,
+        };
+      }),
+      total: test.questions.length,
+    }
+  };
+};
+const getTestProgressInfo = (progress) => {
+  return {
+      test: progress.test,
+      progress: {
+          score: progress.scoreHighest,
+          times: progress.times,
+          last_date: progress.date.valueOf(),
       }
-    };
   };
-  const getTestProgressInfo = (progress) => {
-    return {
-        test: progress.test,
-        progress: {
-            score: progress.scoreHighest,
-            times: progress.times,
-            last_date: progress.date.valueOf(),
-        }
-    };
 }
-  let counter = testsProgress.length;
-  const getNewId = () => {
-    return ++counter;
-  };
+let counter = testsProgress.length;
+const getNewId = () => {
+  return ++counter;
+};
 
+describe('TestController', () => {
+  let controller: TestController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

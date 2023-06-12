@@ -6,145 +6,145 @@ import { LessonService } from './lesson.service';
 import { CardType } from 'src/entity/card.entity';
 import { CardItemType } from 'src/entity/card-item.entity';
 
-describe('LessonController', () => {
-  let controller: LessonController;
-  const lessons = [{
+const lessons = [{
+  id: 1,
+  name: 'test',
+  visible: true,
+  category: 1,
+  linkedTest: 1,
+  cards: [{
     id: 1,
-    name: 'test',
-    visible: true,
-    category: 1,
-    linkedTest: 1,
-    cards: [{
+    type: CardType.WORD,
+    audioUrl: '/public/audio/test.wav',
+    content: 'test content',
+    translation: 'test translation',
+    lesson: 1,
+    items: [{
       id: 1,
-      type: CardType.WORD,
-      audioUrl: '/public/audio/test.wav',
-      content: 'test content',
-      translation: 'test translation',
-      lesson: 1,
-      items: [{
-        id: 1,
-        type: CardItemType.HEADER,
-        order: 0,
-        content: 'Examples',
-        card: 1,
-      }, {
-        id: 2,
-        type: CardItemType.PARAGRAPH,
-        order: 1,
-        content: 'test',
-        card: 1,
-      }],
-    }],
-  }, {
-    id: 2,
-    name: 'test2',
-    visible: true,
-    category: 2,
-    linkedTest: 2,
-    cards: [{
+      type: CardItemType.HEADER,
+      order: 0,
+      content: 'Examples',
+      card: 1,
+    }, {
       id: 2,
-      type: CardType.WORD,
-      audioUrl: '/public/audio/test2.wav',
-      content: 'test2 content',
-      translation: 'test2 translation',
-      lesson: 2,
-      items: [{
-        id: 3,
-        type: CardItemType.HEADER,
-        order: 0,
-        content: 'Examples',
-        card: 2,
-      }, {
-        id: 4,
-        type: CardItemType.PARAGRAPH,
-        order: 1,
-        content: 'test2',
-        card: 2,
-      }],
+      type: CardItemType.PARAGRAPH,
+      order: 1,
+      content: 'test',
+      card: 1,
     }],
-  }, {
-    id: 3,
-    name: 'test',
-    visible: true,
-    category: 1,
-    linkedTest: 3,
-    cards: [{
+  }],
+}, {
+  id: 2,
+  name: 'test2',
+  visible: true,
+  category: 2,
+  linkedTest: 2,
+  cards: [{
+    id: 2,
+    type: CardType.WORD,
+    audioUrl: '/public/audio/test2.wav',
+    content: 'test2 content',
+    translation: 'test2 translation',
+    lesson: 2,
+    items: [{
       id: 3,
-      type: CardType.WORD,
-      audioUrl: '/public/audio/test3.wav',
-      content: 'test3 content',
-      translation: 'test3 translation',
-      lesson: 3,
-      items: [{
-        id: 5,
-        type: CardItemType.HEADER,
-        order: 0,
-        content: 'Examples',
-        card: 3,
-      }, {
-        id: 6,
-        type: CardItemType.PARAGRAPH,
-        order: 1,
-        content: 'test3',
-        card: 3,
-      }],
+      type: CardItemType.HEADER,
+      order: 0,
+      content: 'Examples',
+      card: 2,
     }, {
       id: 4,
-      type: CardType.SENTENCE,
-      audioUrl: '/public/audioo/test3s.wav',
-      content: 'test3s content',
-      translation: 'test3s translation',
-      lesson: 3,
-      items: [{
-        id: 7,
-        type: CardItemType.PARAGRAPH,
-        order: 1,
-        content: 'test3s',
-        card: 4,
-      }],
+      type: CardItemType.PARAGRAPH,
+      order: 1,
+      content: 'test2',
+      card: 2,
     }],
-  }];
-  const lessonsProgress = [{
-    id: 1,
-    lesson: 1,
-    account: 1,
-    date: new Date(2023, 1, 1, 1, 1, 1),
-    progress: 50,
+  }],
+}, {
+  id: 3,
+  name: 'test',
+  visible: true,
+  category: 1,
+  linkedTest: 3,
+  cards: [{
+    id: 3,
+    type: CardType.WORD,
+    audioUrl: '/public/audio/test3.wav',
+    content: 'test3 content',
+    translation: 'test3 translation',
+    lesson: 3,
+    items: [{
+      id: 5,
+      type: CardItemType.HEADER,
+      order: 0,
+      content: 'Examples',
+      card: 3,
+    }, {
+      id: 6,
+      type: CardItemType.PARAGRAPH,
+      order: 1,
+      content: 'test3',
+      card: 3,
+    }],
   }, {
-    id: 2,
-    lesson: 2,
-    account: 1,
-    date: new Date(),
-    progress: 100,
-  }];
-  const getGeneralLessonInfo = (lesson) => {
-    return {            
-      id: lesson.id,
-      name: lesson.name,
-      visible: lesson.visible,
-      category: lesson.category,
-    }
-  };
-  const getLessonInfo = (lesson) => {
-    return {
-      ...getGeneralLessonInfo(lesson),
-      test: lesson.linkedTest,
-      cards: {
-        value: lesson.cards.map((card) => {
-          return {
-            id: card.id,
-            type: card.type,
-            audio_url: card.audioUrl,
-            content: card.content,
-            translation: card.translation,
-            items: card.items,
-          }
-        }),
-        total: lesson.cards.length,
-      },
-    }
-  };
+    id: 4,
+    type: CardType.SENTENCE,
+    audioUrl: '/public/audioo/test3s.wav',
+    content: 'test3s content',
+    translation: 'test3s translation',
+    lesson: 3,
+    items: [{
+      id: 7,
+      type: CardItemType.PARAGRAPH,
+      order: 1,
+      content: 'test3s',
+      card: 4,
+    }],
+  }],
+}];
+const lessonsProgress = [{
+  id: 1,
+  lesson: 1,
+  account: 1,
+  date: new Date(2023, 1, 1, 1, 1, 1),
+  progress: 50,
+}, {
+  id: 2,
+  lesson: 2,
+  account: 1,
+  date: new Date(),
+  progress: 100,
+}];
+const getGeneralLessonInfo = (lesson) => {
+  return {            
+    id: lesson.id,
+    name: lesson.name,
+    visible: lesson.visible,
+    category: lesson.category,
+  }
+};
+const getLessonInfo = (lesson) => {
+  return {
+    ...getGeneralLessonInfo(lesson),
+    test: lesson.linkedTest,
+    cards: {
+      value: lesson.cards.map((card) => {
+        return {
+          id: card.id,
+          type: card.type,
+          audio_url: card.audioUrl,
+          content: card.content,
+          translation: card.translation,
+          items: card.items,
+        }
+      }),
+      total: lesson.cards.length,
+    },
+  }
+};
 
+describe('LessonController', () => {
+  let controller: LessonController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

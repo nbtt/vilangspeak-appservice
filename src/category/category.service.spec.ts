@@ -1,17 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoryService } from './category.service';
 
+const categories = [{
+  id: 1,
+  name: 'test',
+  image: 'test',
+}, {
+  id: 2,
+  name: 'test',
+  image: 'test',
+}];
+
 describe('CategoryService', () => {
   let service: CategoryService;
-  const categories = [{
-    id: 1,
-    name: 'test',
-    image: 'test',
-  }, {
-    id: 2,
-    name: 'test',
-    image: 'test',
-  }];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

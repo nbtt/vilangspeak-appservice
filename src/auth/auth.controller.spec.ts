@@ -5,9 +5,10 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AccountRole } from 'src/entity/account.entity';
 
+const logout = jest.fn().mockResolvedValue(undefined);
+
 describe('AuthController', () => {
   let controller: AuthController;
-  const logout = jest.fn().mockResolvedValue(undefined);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

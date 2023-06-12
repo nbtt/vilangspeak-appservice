@@ -4,17 +4,18 @@ import { CategoryService } from './category.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from 'src/entity/category.entity';
 
+const categories: Category[] = [{
+  id: 1,
+  name: 'test',
+  image: 'test',
+}, {
+  id: 2,
+  name: 'test',
+  image: 'test',
+}];
+
 describe('CategoryController', () => {
   let controller: CategoryController;
-  const categories: Category[] = [{
-    id: 1,
-    name: 'test',
-    image: 'test',
-  }, {
-    id: 2,
-    name: 'test',
-    image: 'test',
-  }];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

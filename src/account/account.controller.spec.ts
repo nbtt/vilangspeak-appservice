@@ -4,53 +4,54 @@ import { AccountService } from './account.service';
 import { ChangePasswordDTO, CreateAccountDTO, UpdateAccountDTO } from 'src/dto/account.dto';
 import { HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 
+const accounts = [{
+  id: 1,
+  username: 'test',
+  password: 'test pass',
+  name: 'test',
+  birthday: '2000-01-01',
+  role: 1,
+}, {
+  id: 2,
+  username: 'test2',
+  password: 'test2 pass',
+  name: 'test2',
+  birthday: '2000-01-02',
+  role: 1,
+}, {
+  id: 3,
+  username: 'test3',
+  password: 'test3 pass',
+  name: 'test3',
+  birthday: '2000-01-03',
+  role: 1,
+}];
+const achievementsLog = [{
+  id: 1,
+  account: 1,
+  achievement: {
+    id: 1,
+    name: 'test',
+    image: '/public/image/test.png',
+  },
+  date: new Date(2023, 1, 1).valueOf(),
+}, {
+  id: 2,
+  account: 1,
+  achievement: {
+    id: 2,
+    name: 'test2',
+    image: '/public/image/test2.png',
+  },
+  date: new Date(2023, 1, 2).valueOf(),
+}];
+let counter = accounts.length;
+const getNewId = () => {
+  return ++counter;
+};
+
 describe('AccountController', () => {
   let controller: AccountController;
-  const accounts = [{
-    id: 1,
-    username: 'test',
-    password: 'test pass',
-    name: 'test',
-    birthday: '2000-01-01',
-    role: 1,
-  }, {
-    id: 2,
-    username: 'test2',
-    password: 'test2 pass',
-    name: 'test2',
-    birthday: '2000-01-02',
-    role: 1,
-  }, {
-    id: 3,
-    username: 'test3',
-    password: 'test3 pass',
-    name: 'test3',
-    birthday: '2000-01-03',
-    role: 1,
-  }];
-  const achievementsLog = [{
-    id: 1,
-    account: 1,
-    achievement: {
-      id: 1,
-      name: 'test',
-      image: '/public/image/test.png',
-    },
-    date: new Date(2023, 1, 1).valueOf(),
-  }, {
-    id: 2,
-    account: 1,
-    achievement: {
-      id: 2,
-      name: 'test2',
-      image: '/public/image/test2.png',
-    },
-    date: new Date(2023, 1, 2).valueOf(),
-  }];
-  let counter = accounts.length;
-  const getNewId = () => {
-    return ++counter;
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
