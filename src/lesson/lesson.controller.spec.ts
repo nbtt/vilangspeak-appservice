@@ -272,31 +272,28 @@ describe('LessonController', () => {
     });
   });
 
-  // it('should return an error with lesson progress not found', async () => {
-  //   const result = await controller.getProgress({ id: 3 }, { account_id: 1 });
-  //   expect(result).toEqual({
-  //     timestamp: expect.any(Number),
-  //     error: {
-  //       code: 404,
-  //       message: 'Lesson not found',
-  //     },
-  //   });
-  // });
+  it('should return an empty progress with lesson progress not found', async () => {
+    const result = await controller.getProgress({ id: 3 }, { account_id: 1 });
+    expect(result).toEqual({
+      timestamp: expect.any(Number),
+      data: {
+        lesson: 3,
+        progress: {
+          value: 0,
+          last_date: 0,
+        }
+      },
+    });
+  });
 
-  // it('should set a lesson progress with id, account_id and value', async () => {
-  //   const result = await controller.setProgress({ id: 1 }, { timestamp: (new Date()).getTime(), account_id: 1, value: 70 });
-  //   expect(result).toEqual(getSuccessResponse());
-  //   expect(lessonsProgress[0].progress).toEqual(70);
-  // });
+  it('should set a lesson progress with id, account_id and value', async () => {
+    const result = await controller.setProgress({ id: 1 }, { timestamp: (new Date()).getTime(), account_id: 1, value: 70 });
+    expect(result).toEqual(getSuccessResponse());
+    expect(lessonsProgress[0].progress).toEqual(70);
+  });
 
-  // it('should return an error when setting progress with lesson not found', async () => {
-  //   const result = await controller.setProgress({ id: 3 }, { timestamp: (new Date()).getTime(), account_id: 1, value: 70 });
-  //   expect(result).toEqual({
-  //     timestamp: expect.any(Number),
-  //     error: {
-  //       code: 404,
-  //       message: 'Not found account or lesson',
-  //     },
-  //   });
-  // });
+  it('should return an error when setting progress with lesson not found', async () => {
+    const result = controller.setProgress({ id: 3 }, { timestamp: (new Date()).getTime(), account_id: 1, value: 70 });
+    expect(result).rejects.toThrowError(new HttpException("Not found account or lesson", HttpStatus.NOT_FOUND));
+  });
 });
