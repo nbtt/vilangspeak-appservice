@@ -11,7 +11,7 @@ describe('LessonController', () => {
   const lessons = [{
     id: 1,
     name: 'test',
-    visible: false,
+    visible: true,
     category: 1,
     linkedTest: 1,
     cards: [{
@@ -189,7 +189,7 @@ describe('LessonController', () => {
   });
 
   it('should return all lessons', async () => {
-    const result = await controller.getAll({ limit: 10, offset: 0 });
+    const result = await controller.getAll({ limit: null, offset: null });
     expect(result).toEqual({
       timestamp: expect.any(Number),
       data: {
@@ -288,7 +288,10 @@ describe('LessonController', () => {
 
   it('should set a lesson progress with id, account_id and value', async () => {
     const result = await controller.setProgress({ id: 1 }, { timestamp: (new Date()).getTime(), account_id: 1, value: 70 });
-    expect(result).toEqual(getSuccessResponse());
+    expect(result).toEqual({
+      ...getSuccessResponse(),
+      timestamp: expect.any(Number),
+    });
     expect(lessonsProgress[0].progress).toEqual(70);
   });
 
