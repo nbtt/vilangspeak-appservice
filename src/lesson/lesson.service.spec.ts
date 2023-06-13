@@ -191,6 +191,12 @@ describe('LessonService', () => {
         {
           provide: 'LessonLogRepository',
           useValue: {
+            find: jest.fn().mockImplementation((filter: { where: { account: { id: number } }, loadRelationIds?: any, relations?: any }) => {
+              return lessonsProgress.filter(lesson => lesson.account === filter.where.account.id );
+            }),
+            findOne: jest.fn().mockImplementation((filter: { where: { account: { id: number }, lesson: { id: number } }, loadRelationIds?: any, relations?: any }) => {
+              return lessonsProgress.find(lesson => lesson.id === filter.where.lesson.id && lesson.account === filter.where.account.id);
+            }),
           },
         }
       ],
@@ -216,5 +222,15 @@ describe('LessonService', () => {
   it('should return lesson by id', async () => {
     const result = await service.getOne(2);
     expect(result).toEqual(lessons[1]);
+  });
+
+  it('should return all lessons progress', async () => {
+    const result = await service.getProgressAll(1);
+    expect(result).toEqual(lessonsProgress);
+  });
+
+  it('should return lesson progress', async () => {
+    const result = await service.getProgress(2, 1);
+    expect(result).toEqual(lessonsProgress[1]);
   });
 });
